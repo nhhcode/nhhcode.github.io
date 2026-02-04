@@ -1,0 +1,72 @@
+.hidden {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+#tagInput {
+  background-image: url('../images/search-icon.png');
+  background-position: 2px 5px;
+  background-repeat: no-repeat;
+  width: 80%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#resetBtn {
+  width: 20%;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tag-basic {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.tag-controlflow {
+  background: #ecfeff;
+  color: #0f766e;
+}
+
+.tag-datastructure {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.tag-problem {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.tag-principle {
+  background: #ddf28e;
+  color: #136a82;
+}
+
+.tag-algorithm {
+  background: #f8e493;
+  color: #624a08;
+}
+
+.tag-special {
+	background: #fbb3dd;
+	color: #600038;
+}
