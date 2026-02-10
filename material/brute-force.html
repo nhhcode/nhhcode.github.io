@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>NHH Code - Brute Force</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/skel.min.js"></script>
+		<script src="../js/skel-layers.min.js"></script>
+		<script src="../js/init.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+		<link rel="stylesheet" href="../css/skel.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/style-xlarge.css" />
+		<link rel="stylesheet" href="../css/style-tags.css"/>
+		<!--[if lte IE 8]><script src="../js/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            window.MathJax = {
+                tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+            };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="../index.html">NHH Code</a></h1>
+			</header>
+
+            <div class="container">
+
+                <section id="main" class="wrapper">
+
+                    <header class="major">
+                        <h2>Brute Force</h2>
+                        <p>Trying all possibilities.</p>
+                    </header>
+
+                                      
+                        <hr />
+
+                        <h4>1. Nested Loops</h4>
+
+                        <div>
+                        <p>
+                            In some problems, trying all possibilities simply boils down to 
+                            considering all paris, or triples, or any fixed-size tuples.
+                            Such problems can often be solved by using <em>nested loops</em>. 
+                        </p>
+                        <p><span class="image right" style="font-size: 0.7em;"><img src='img/poker_hand-1.png' alt=""/>Image credit: ChatGPT</span>
+                            Consider the following example of the poker variant <em>Texas hold 'em</em>.
+                            Each player holds two private cards in their hands while all players 
+                            share five public cards laid out on the table.
+                            The strength of your hand is determined by the five strongest cards among 
+                            your private and the public cards put together;
+                            the strongest hand wins the round.
+                            To estimate how strong you can expect your hand to be against 
+                            the hands of your opponents, you could simply enumerate all possible 
+                            remaining hands, and count how many of those you would beat.
+                            Since any hand is completely determined by the two private cards,
+                            having two nested loops suffices to consider all possible hands of your opponents.
+                        </p>
+                        <pre><code class="python">
+cards = {'AH', '2H', '3H', ...}
+
+public_cards = {'TH', 'JH', '7C', '4S', '3H'}
+private_cards = {'AS', 'KH'}
+
+remaining_cards = cards - public_cards - private_cards
+
+win, lose = 0, 0
+for card1 in remaining_cards:
+    for card2 in remaining_cards:
+        # Test if private_cards beats (card1, card2) and if so, 
+        # increase win by 1; otherwise, increase lose by 1. #
+
+# Report the strength of your hand by comparing 
+# the values of win and lose. #
+                        </code></pre>
+
+                        <p>
+                            In another poker variant, <em>five-card draw</em>, 
+                            you get all five cards on your hand. 
+                            To determine how strong your hand is against the other hands, 
+                            you now have to enumerate all 5-tuples of remaining cards 
+                            which can be done with five nested loops.
+                        </p>
+                        <pre><code class="python">
+cards = {'AH', '2H', '3H', ...}
+
+private_cards = {'TH', 'JH', '7C', '4S', '3H'}
+
+remaining_cards = cards - private_cards
+
+win, lose = 0, 0
+for card1 in remaining_cards:
+    for card2 in remaining_cards:
+        for card3 in remaining_cards:
+            for card4 in remaining_cards:
+                for card5 in remaining_cards:
+                    # Test if private_cards beats (card1, card2, card3, card4, card5) 
+                    # and if so, increase win by 1; otherwise, increase lose by 1. #
+
+# Report the strength of your hand by comparing 
+# the values of win and lose. #
+                        </code></pre>
+                        
+                        <p>
+                            <strong>Running Time.</strong>
+                            Note that as the number of nestings increases, 
+                            the run time of your program quickly gets prohibitively slow.
+                            If you have $k$ nested loops each going over $n$ items,
+                            this this yields a running time of (at least) $O(n^k)$.
+                            The following gives you a rough idea how large $n$ 
+                            can be for given nesting-depths of loops when you have 
+                            a run time limit of 1 second.
+                            Note that determining the strength of your hand in five-card draw power
+                            is probably <strong>not</strong> feasible within this limit:
+                            One deck has 52 cards, so $n = 52 - 5 = 47$, 
+                            while the limit lies around 40.
+                            <table class="alt" id="tab:nested-loops">
+                                <caption style="font-size: 0.7em;">
+                                    Feasible input sizes for given nesting-depth of loops.
+                                    Based on Hamlin, Hamlin, Effendy - Competitive Programming 4.
+                                </caption>
+                                <tr>
+                                    <td>Nested loops ($k$)</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>$n \le \ldots$</td><td>100M</td><td>10K</td><td>450</td><td>100</td><td>40</td><td>[10..11]</td>
+                                </tr>
+                            </table>
+                        </p>
+
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=brute-force+nested-loops'><span class="tag tag-controlflow">nested-loops</span></a>
+                        </p>
+                        </div>
+                    
+                        <hr />
+
+                        <h4>2. Subsets</h4>
+
+                        <p>
+                            To continue the example from above, we can enumerate all pairs of cards 
+                            and all 5-tuples of cards as 
+                            size-2 and size-5 subset of the available cards, respectively.
+                            The <code class="insentence">itertools</code>-package which is part of 
+                            python's standard distribution provides a method,
+                            <code class="insentence">combinations(collection, k)</code>,
+                            that lets you do just that.
+                            Here, <code class="insentence">collection</code> is the ground set (the deck of cards),
+                            and <code class="insentence">k</code> is the size of the subsets you want to consider.
+                        </p>
+                        <pre><code class="python">
+from itertools import combinations
+
+remaining_cards = ...
+
+# For Texas Hold 'Em
+for pair in combinations(remaining_cards, 2):
+    # Compare the pair against your own
+
+# For Five-Card Draw
+for hand in combinations(remaining_cards, 5):
+    # Compare the hand against your own
+                        </code></pre>
+                        <p>
+                            This looks much more concise than the approach with nested loops. 
+                            Keep in mind though that nested loops can be more versatile: 
+                            each of the loops may iterate over another set, while 
+                            here all elements come from the same set.
+                            (For an <code class="insentence">itertools</code>-based solution
+                            for such scenarios, check out the 
+                            <code class="insentence">product</code>-function 
+                            which lets you iterate over Cartesian products.)
+                        </p>
+
+                        <p>
+                            If we want to iterate over <em>all</em> subsets of cards, regardless of their size, 
+                            we can do it like so:
+                            we first iterate over all subset sizes and then over all subsets of that size.
+                        </p>
+                        <pre><code>
+from itertools import combinations
+
+cards = ...
+
+for k in range(len(cards)+1):
+    for s in combinations(cards, k):
+        # ...
+                        </code></pre>
+                        <p>
+                            <strong>Running time.</strong>
+                            For enumerating subsets of fixed size, we can essentially consult 
+                            <a href="#tab:nested-loops">the table regarding nested loops</a> 
+                            with the size of the subset taking the role of the nesting-depth.
+                            When enumerating all subsets of a set of size $n$, 
+                            we have to consider $2^n$ choices.
+                            How big the input can get depends on what we do with each set.
+                            <table class="alt">
+                                <caption style="font-size: 0.7em;">
+                                    Feasible input sizes for enumerating all subsets.
+                                    From Hamlin, Hamlin, Effendy - Competitive Programming 4.
+                                </caption>
+                                <tr>
+                                    <td>Running time per subset</td><td>$O(1)$</td><td>$O(n)$</td><td>$O(n^2)$</td>
+                                </tr>
+                                <tr>
+                                    <td>$n \le \ldots$</td><td>[24..26]</td><td>[18..22]</td><td>[17..19]</td>
+                                </tr>
+                            </table>
+                        </p>
+
+                        <p>
+                            Note that we can use <a class="alt" href='#sec-bitmasks'><strong>bitmasks</strong></a>
+                            to get a substantial performance advantage over enumerating 
+                            all subsets using <code class="insentence">itertools</code>.
+                            For many brute-force problems using subsets, this is in fact necessary.
+                        </p>
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=brute-force+subset'><span class="tag tag-misc">subset</span></a>
+                        </p>
+
+                        <hr />
+                        <h4>3. Permutations</h4>
+
+                        <p>
+                            Consider another, made-up card game.
+                            You have a number of cards on your hand, 
+                            and accumulate points as you play them, one at a time.
+                            The effect on your score depends on the card you play 
+                            and the one you played in the step before.
+                            For intance, playing card B after card A (move A $\to$ B) 
+                            increases your current score by 10,
+                            while playing C after A doubles it, etc.
+                            <table class="alt">
+                                <tr>
+                                    <td>Move</td><td>A $\to$ B</td><td>A $\to$ C</td><td>B $\to$ C</td><td>D $\to$ B</td><td>D $\to$ C</td><td>...</td>
+                                </tr>
+                                <tr>
+                                    <td>Effect</td><td>+10</td><td>x2</td><td>-12</td><td>/3</td><td>+8</td><td>...</td>
+                                </tr>
+                            </table>
+                            It is not obvious in which order you should 
+                            play the cards to maximize your score. 
+                            You may have to resort to trying out all orders, or <em>permutations</em>, 
+                            of the cards and remembering the highest score.
+                        </p>
+                        <p>
+                            The <code class="insentence">itertools</code>-package has a function 
+                            <code class="insentence">permutations(collection)</code>
+                            which enumerates all permutations of the elements in 
+                            <code class="insentence">collection</code>.
+                            We could find the optimal strategy for the above card game as follows:
+                        </p>
+                        <pre><code class="python">
+from itertools import permutations
+from math import inf
+
+cards = {'A', 'B', 'C', 'D', 'E'}
+
+topScore = -inf
+for p in permutations(cards):
+    score = 0
+    for c in p:
+        # Update score according to 
+        # the effect of the card c.
+    topScore = max(topScore, score)
+
+print(topScore)
+                        </code></pre>
+
+                        <p>
+                            <strong>Running time.</strong>
+                            There are even more permutations of an $n$-element set than there are subsets,
+                            namely $n! = n\cdot(n-1)\cdot(n-2)\cdots 1$.
+                            In a 1-second running time limit, you should expect to be able to try all permutations of 
+                            sets of size <strong>up to 10 or 11</strong>, but not more.
+                        </p>
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=brute-force+permutation'><span class="tag tag-misc">permutation</span></a>
+                        </p>
+
+                        <hr />
+                        <h4 id="sec-bitmasks">4. Bitmasks</h4>
+                        
+                        <p>
+                            When dealing with a large number of sets, it becomes crucial to perform basic operations
+                            such as unions and intersections as efficiently as possible.
+                            <strong>Bitmasks</strong> are a powerful tool to achieve that.
+                        </p>
+                        <p><strong>Representation.</strong>
+                            Consider an integer whose binary representation uses 8 bits, 
+                            say <code class="insentence">154 = (10011010)<sub>2</sub></code>:
+                            $$0\cdot 2^0 + 1\cdot 2^1 + 0\cdot 2^2 + 1\cdot 2^3 + 1\cdot 2^4 + 0\cdot 2^5 + 0\cdot 2^6 + 1\cdot 2^7
+                            = 2 + 8 + 16 + 128 = 154$$
+                            We can view this binary representation as an indicator vector of an ordered 
+                            8-element ground set, say 
+                            <code class='insentence'>(A, B, C, D, E, F, G, H)</code>.
+                            For instance, the first (rightmost) bit being set to 0 indicates that the 
+                            first element A is <em>not</em> part of the subset, 
+                            while the second bit being set to 1 indicates that B <em>is</em> contained in it,
+                            and so on.
+                            This way, the number 154 represents the subset <code class="insentence">{B, D, E, H}</code>
+                            in this context. <br>
+                            <strong>Obs:</strong>
+                            A bitmask effectively is a subset of <em>indices</em> rather than a subset of <em>elements</em> 
+                            of a ground set, so when working with bitmasks, it is important that you fix an 
+                            (arbitrary) ordering on the ground set first.
+                        </p>
+                        <p>
+                            <strong>Basic Operations.</strong>
+                            Suppose you have two bitmasks S and T
+                            representing two subsets of 
+                            <code class='insentence'>(A, B, C, D, E, F, G, H)</code>.
+                            To compute the <em>union</em> of S and T, $S \cup T$,
+                            we use the <em>bit-wise OR</em>, in code 
+                            <code class="insentence">S | T</code>:
+                            The $i$-th element is contained in $S \cup T$ if and only if 
+                            the $i$-th bit of S <em>or</em> the $i$-th bit of T is set to 1 (or both).
+                            <pre>
+  10011010 (represents {B, D, E, H})
+| 00101110 (represents {B, C, D, F})
+------------------------------------------
+  10111110 (represents {B, C, D, E, F, H})
+                            </pre>
+                        </p>
+                        <p>
+                            To compute the <em>intersection</em> of S and T, $S \cap T$,
+                            we use the <em>bit-wise AND</em>, in code
+                            <code class="insentence">S & T</code>:
+                            The $i$-th element is contained in $S \cap T$ if and only if 
+                            the $i$-th bit of S <em>and</em> the $i$-th bit of T is set to 1.
+                            <pre>
+  10011010 (represents {B, D, E, H})
+& 00101110 (represents {B, C, D, F})
+------------------------------------
+  00001010 (represents {B, D})
+                            </pre>
+                        </p>
+                        <p>
+                            To compute the <em>difference</em> $S \setminus T$,
+                            we implement the <em>bit-wise AND NOT</em>, in code 
+                            <code class="insentence">S &~ T</code>:
+                            The $i$-th element is in $S \setminus T$ 
+                            if the $i$-th bit of S is 1 and the $i$-th bit of T is 0.
+                            (For if the $i$-th bit of T was 1, the $i$-th element would be 
+                            removed when subtracting $T$ from $S$.)
+                            <pre>
+   10011010 (represents {B, D, E, H})
+&~ 00101110 (represents {B, C, D, F})
+-------------------------------------
+   10010000 (represents {E, H})
+                            </pre> 
+                        </p>
+                        <table class="alt">
+                            <tr>
+                                <td>Operation</td>
+                                <td>\(S \cup T\) (union)</td>
+                                <td>$S \cap T$ (intersection)</td>
+                                <td>$S \setminus T$ (difference)</td>
+                                <td>$S \subseteq T$ (subset)</td>
+                            </tr>
+                            <tr>
+                                <td>Bit-wise instruction</td>
+                                <td><code class="insentence">S | T</code></td>
+                                <td><code class="insentence">S & T</code></td>
+                                <td><code class="insentence">S &~ T</code></td>
+                                <td><code class="insentence">S & T == S</code></td>
+                            </tr>
+                        </table>
+                        <p>
+                            <strong>Enumerating all subsets (bitmasks).</strong>
+                            Bitmasks give us a direct way to enumerate all subsets of an $n$-element set;
+                            in particular, we can loop over all numbers from 0 to $2^n-1$,
+                            in bitmask terms this means going from 
+                            <code class="insentence">000...0</code> (the empty set) to 
+                            <code class="insentence">111...1</code> (the entire ground set).
+                            <pre><code class="python">
+for bm in range(2**n):
+    # Do something with the bitmask bm.
+                            </code></pre>
+                        </p>
+                        <p>
+                            <strong>Efficiency/When to use.</strong>
+                            What makes bitmasks so much more efficient than regular (python) sets?
+                            The crux is that if we use bitmasks that fit in a 32- or 64-bit number 
+                            (depending on the system architecture),
+                            then a basic operation involving two bitmasks can be performed as efficiently 
+                            as a simple arithmetic operation on small integers (addition, subtraction, etc),
+                            which we can view as a constant-time operation. 
+                            If we worked with regular sets, then the running time of such operations 
+                            would depend on the size of the sets, and be much slower in general. <br>
+                            Since python supports arbitrary-size integers, bitmasks can in fact be used to 
+                            represent much larger sets, but the gain in performance vanishes as the sets 
+                            become too large.
+                            As a rule of thumb, using bitmasks on a ground set with <strong>up to 31 elements</strong> 
+                            is always a good idea. After that, you may have to consider other factors.                       
+                        </p>
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=brute-force+bitmask'><span class="tag tag-datastructure">bitmask</span></a>
+                        </p>
+                </section>
+            </div>
+    </body>
+</html>
