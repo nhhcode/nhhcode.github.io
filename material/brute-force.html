@@ -61,7 +61,7 @@
                             Such problems can often be solved by using <em>nested loops</em>. 
                         </p>
                         <p><span class="image right" style="font-size: 0.7em;"><img src='img/poker_hand-1.png' alt=""/>Image credit: ChatGPT</span>
-                            Consider the following example of the poker variant <em>Texas hold 'em</em>.
+                            Consider the following example of the poker variant <em>Texas Hold 'Em</em>.
                             Each player holds two private cards in their hands while all players 
                             share five public cards laid out on the table.
                             The strength of your hand is determined by the five strongest cards among 
@@ -155,9 +155,10 @@ for card1 in remaining_cards:
                         <h4>2. Subsets</h4>
 
                         <p>
-                            To continue the example from above, we can enumerate all pairs of cards 
-                            and all 5-tuples of cards as 
-                            size-2 and size-5 subset of the available cards, respectively.
+                            To continue the example from above, we can enumerate all 
+                            private hands of Texas Hold'em (2 cards) 
+                            and all hands of Five-Card Draw (5 cards) as
+                            size-2 and size-5 subsets of the available cards, respectively.
                             The <code class="insentence">itertools</code>-package which is part of 
                             python's standard distribution provides a method,
                             <code class="insentence">combinations(collection, k)</code>,
@@ -187,6 +188,13 @@ for hand in combinations(remaining_cards, 5):
                             for such scenarios, check out the 
                             <code class="insentence">product</code>-function 
                             which lets you iterate over Cartesian products.)
+                            On top of that, nested loops give you more control over when 
+                            to abort certain iterations of inner loops.
+                            For instance, it could happen that after looking at the first three drawn cards, 
+                            you can already tell that any complete 5-card hand that will result from it 
+                            will beat your own hand. 
+                            In that case, you can shortcut the work that would have been done inside 
+                            the remaining two inner loops to improve your running time.
                         </p>
 
                         <p>
@@ -327,11 +335,15 @@ print(topScore)
                             Suppose you have two bitmasks S and T
                             representing two subsets of 
                             <code class='insentence'>(A, B, C, D, E, F, G, H)</code>.
-                            To compute the <em>union</em> of S and T, $S \cup T$,
-                            we use the <em>bit-wise OR</em>, in code 
-                            <code class="insentence">S | T</code>:
-                            The $i$-th element is contained in $S \cup T$ if and only if 
-                            the $i$-th bit of S <em>or</em> the $i$-th bit of T is set to 1 (or both).
+                            Let us see how to compute the (bitmask of their) <strong>union</strong> $S \cup T$.
+                            An element is in $S \cup T$ if and only if it is in $S$ <em>or</em> in $T$ (or both).
+                            Therefore, for all $i$, the $i$-th bit in the bitmask representing 
+                            $S \cup T$ should be set to 1 if and only if the $i$-th 
+                            bit in S is set to 1 or the $i$-th bit in T is set to 1.
+                            The operation 
+                            <code class="insentence">S | T</code>
+                            achieves just that in a single step:
+                            it computes the <em>bit-wise OR</em> of S and T.
                             <pre>
   10011010 (represents {B, D, E, H})
 | 00101110 (represents {B, C, D, F})
@@ -340,26 +352,67 @@ print(topScore)
                             </pre>
                         </p>
                         <p>
-                            To compute the <em>intersection</em> of S and T, $S \cap T$,
-                            we use the <em>bit-wise AND</em>, in code
-                            <code class="insentence">S & T</code>:
-                            The $i$-th element is contained in $S \cap T$ if and only if 
-                            the $i$-th bit of S <em>and</em> the $i$-th bit of T is set to 1.
+                            To compute the <strong>intersection</strong> $S \cap T$, 
+                            observe that an element is in $S \cap T$ if and only if 
+                            it is in S <em>and</em> in T.
+                            In the bitmask representing $S \cap T$ 
+                            we therefore want, for all $i$, 
+                            that the $i$-th bit is set to 1 if and only if 
+                            the $i$-th bit in S is 1 and the $i$-th bit in T is 1.
+                            The instruction <code class="insentence">S & T</code> 
+                            does this in one step; it computes the <em>bit-wise AND</em>
+                            of S and T.
                             <pre>
-  10011010 (represents {B, D, E, H})
-& 00101110 (represents {B, C, D, F})
-------------------------------------
+  10011010 (represents {B, D, E, H} = S)
+& 00101110 (represents {B, C, D, F} = T)
+----------------------------------------
   00001010 (represents {B, D})
                             </pre>
                         </p>
                         <p>
-                            To compute the <em>difference</em> $S \setminus T$,
-                            we implement the <em>bit-wise AND NOT</em>, in code 
-                            <code class="insentence">S &~ T</code>:
-                            The $i$-th element is in $S \setminus T$ 
-                            if the $i$-th bit of S is 1 and the $i$-th bit of T is 0.
-                            (For if the $i$-th bit of T was 1, the $i$-th element would be 
-                            removed when subtracting $T$ from $S$.)
+                            Testing whether S is a <strong>subset</strong> of T, $S \subseteq T$, 
+                            means verifying that each element in S is contained in T.
+                            A more bitmask-friendly, equivalent, task 
+                            is to check whether $S \cap T = S$.
+                            For if any element of S was not in T, then $S \cap T$ would 
+                            be a <em>strinct</em> subset of T, and therefore not equal to T.
+                            In code, we can use the expression 
+                            <code class="insentence">S & T == S</code>. 
+                            Observe for instance that in the previous example, 
+                            <code class="insentence">S & T</code>
+                            differs from S, since E and H are not in T
+                            and so S is not a subset of T. On the other hand, 
+                            in the following example, 
+                            the first set R is a subset of T,
+                            and the condition 
+                            <code class="insentence">R & T == R</code>
+                            is fulfilled.
+                            <pre>
+  00001010 (represents {B, D} = R)
+& 00101110 (represents {B, C, D, F} = T)
+----------------------------------------
+  00001010 (represents {B, D})
+                            </pre>
+                        </p>
+                        <p>
+                            To compute the <strong>difference</strong> $S \setminus T$,
+                            observe that an element is in $S \setminus T$ 
+                            if and only if it is in S <em>and not</em> in T.
+                            Indeed, each element contained in $T$ gets removed from $S$ 
+                            (if present) when computing $S \setminus T$.
+                            In the bitmask representing $S \setminus T$, 
+                            for each $i$, the $i$-th bit has to be set to 1 
+                            if the $i$-th bit in S is 1, 
+                            and the $i$-th bit in T is not 1.
+                            The operation 
+                            <code class="insentence">S &~ T</code>
+                            achieves that.
+                            It first flips all bits in T (each 0 becomes 1 and each 1 becomes 0)
+                            using the <em>bit-wise NOT</em> instruction 
+                            <code class="insentence">~T</code>,
+                            and then takes the bit-wise AND.
+                            Put together, it can be understood as a 
+                            <em>bit-wise AND NOT</em> operation.
                             <pre>
    10011010 (represents {B, D, E, H})
 &~ 00101110 (represents {B, C, D, F})
@@ -367,31 +420,73 @@ print(topScore)
    10010000 (represents {E, H})
                             </pre> 
                         </p>
+                        <p>
+                            The last operation we want to consider, the <strong>bit-shift</strong>, is easier 
+                            to motivate from a bit-string perspective; 
+                            we explain its significance for bitmasks later.
+                            For integers $n$ and $k$,
+                            <code class="insentence">n << k</code>
+                            shifts all bits in the binary representation of $n$ by $k$ positions to the left
+                            (and attaching $k$ zeros to the end).
+                            <pre>
+n:       10011010
+n << 3:  10011010000
+                            </pre>
+                        </p>
+                        <p>
+                            In the context of bitmasks, one frequently applied bit-shift is 
+                            <code class="insentence">(1 << i)</code>
+                            which generates a bitmask corresponding to a subset containing only the $i$-th element 
+                            (a so-called <strong>singleton</strong>).
+                            We can use such singletons to <em>add new elements to a set</em>.
+                            Given a set $S$ and an element $x$, 
+                            adding $x$ to $S$ is the same as taking the union $S \cup \{x\}$.
+                            If we want to add the $i$-th element of our ground-set to a bitmask S, 
+                            we can use 
+                            <code class="insentence">S | (1 << i)</code>.
+                            <pre>
+1:          00000001
+(1 << 5):   00100000
+
+            10011010 (represents {B, D, E, H})
+| (1 << 5)  00100000 (represents {F})
+-------------------------------------------------
+            10111010 (represents {B, D, E, F, H})
+                            </pre>
+                            Observe that if the $i$-th element is already in $S$, 
+                            this operation does not change the bitmask of S.
+                        </p>
                         <table class="alt">
                             <tr>
                                 <td>Operation</td>
                                 <td>\(S \cup T\) (union)</td>
                                 <td>$S \cap T$ (intersection)</td>
-                                <td>$S \setminus T$ (difference)</td>
                                 <td>$S \subseteq T$ (subset)</td>
+                                <td>$S \setminus T$ (difference)</td>
+                                <td>Add $i$-th el. to $S$</td>
                             </tr>
                             <tr>
                                 <td>Bit-wise instruction</td>
                                 <td><code class="insentence">S | T</code></td>
                                 <td><code class="insentence">S & T</code></td>
-                                <td><code class="insentence">S &~ T</code></td>
                                 <td><code class="insentence">S & T == S</code></td>
+                                <td><code class="insentence">S &~ T</code></td>
+                                <td><code class="insentence">S | (1 << i)</code></td>
                             </tr>
                         </table>
                         <p>
                             <strong>Enumerating all subsets (bitmasks).</strong>
                             Bitmasks give us a direct way to enumerate all subsets of an $n$-element set;
-                            in particular, we can loop over all numbers from 0 to $2^n-1$,
+                            in particular, we can loop over all numbers from $0$ to $2^n-1$,
                             in bitmask terms this means going from 
                             <code class="insentence">000...0</code> (the empty set) to 
                             <code class="insentence">111...1</code> (the entire ground set).
                             <pre><code class="python">
 for bm in range(2**n):
+    # Do something with the bitmask bm.
+
+# Equivalent:
+for bm in range(1 << n):
     # Do something with the bitmask bm.
                             </code></pre>
                         </p>
