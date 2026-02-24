@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>NHH Code - Running Time Analysis and Data Structures</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/skel.min.js"></script>
+		<script src="../js/skel-layers.min.js"></script>
+		<script src="../js/init.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+		<link rel="stylesheet" href="../css/skel.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/style-xlarge.css" />
+		<link rel="stylesheet" href="../css/style-tags.css"/>
+		<!--[if lte IE 8]><script src="../js/html5shiv.js"></script><![endif]-->
+        <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            window.MathJax = {
+                tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+            };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="../index.html">NHH Code</a></h1>
+			</header>
+
+            <div class="container">
+
+                <section id="main" class="wrapper">
+
+                    <header class="major">
+                        <h2>Running Time Analysis</h2>
+                        <p>and performance of basic data structures</p>
+                    </header>
+
+                                      
+                        <hr />
+
+                        <h3>1. Running Time Analysis</h3>
+                        <p>
+                            To get an idea whether your solution to a problem is fast enough,
+                            i.e., will avoid a TLE (Time Limit Exceeded) verdict,
+                            it is a good idea to perform a running time analysis.
+                            This basically boils down to estimating <strong>how many steps</strong> your program will take
+                            as a <strong>function of the input size</strong>.
+                            When performing such an analysis, we always consider the <strong>worst case</strong>,
+                            but more about that later.
+                        </p>
+                        <p><span class="image right" style="font-size: 0.7em;"><img src='img/cartoon-gauss.png' alt=""/>Image credit: ChatGPT</span>
+                            You might have heard the story about how Gauss, as a school boy, 
+                            came up with the formula $\frac{(n+1)n}{2}$ for computing 
+                            the sum of the first $n$ integers, i.e.,
+                            the value of the sum $\sum_{i = 1}^n i$.
+                            From the viewpoint of algorithms, 
+                            you might say he found an algorithm that 
+                            is much faster than simply evaluating the sum step by step.
+                            Let us look at both algorithms, 
+                            the first one computing the sum with a loop, 
+                            and the second one using Gauss' formula, 
+                            and let us estimate its running time, based on the ``input size'' $n$.
+                            <br>
+                        </p>
+                        <img src="img/gauss-analysis.png" style="width: 100%; max-width: 800px;"/>
+<!--
+                        <pre><code class="python">
+def gauss1(n):
+    result = 0
+    for i in range(1, n+1):
+        result += i
+    return result
+
+def gauss2(n):
+    return (n+1)*n//2
+                        </code></pre>
+-->
+                        <p>
+                            Let us consider the function 
+                            <code class="insentence">gauss1</code> first.
+                            It starts by assigning the value 0 to the variable 
+                            <code class="insentence">result</code>,
+                            which takes one step.
+                            Then comes the main loop which is repeated $n$ times 
+                            as $i$ goes from $1$ to $n$.
+                            In <em>each</em> iteration of the loop, we increase 
+                            the value of 
+                            <code class="insentence">result</code>
+                            by $i$, performing <em>one step per iteration</em>.
+                            This results in a total of $n \cdot 1$ steps.
+                            Strictly speaking, we also have to count 
+                            one step every time the counter $i$ gets increased,
+                            which gives an additional $n$ steps.
+                            (But as we see below, we will not have to be that careful in the future.)
+                            Lastly, the return statement in the last line of the function 
+                            also counts as one step.
+                            In total, we have $2n + 2$ steps for executing 
+                            <code class="insentence">gauss1(n)</code>.
+                            <br>
+                            The function 
+                            <code class="insentence">gauss2</code>
+                            on the other hand takes way fewer steps:
+                            it simply performs three arithmetic operations, 
+                            each of which count as a single step,
+                            plus one step for the return statement.
+                            In total, it performs only 4 steps, <em>regardless of the value of $n$</em>.
+                            <br>
+                            In summary, 
+                            as $n$ increases, 
+                            <code class="insentence">gauss1</code>
+                            will perform more and more steps ($2n + 2$), 
+                            and therefore become slower and slower, while 
+                            <code class="insentence">gauss2</code>
+                            always only takes $4$ steps, giving an answer instantly,
+                            regardless of how big $n$ becomes.
+                        </p>
+
+                        <p>
+                            <strong>What is a step?</strong>
+                            Note that it is not always obvious what you can consider to be a single step.
+                            For example, an instruction such as 
+                            <code class="insentence">x in S</code>
+                            may look like a single step, but the number of steps this takes 
+                            crucially depends on what kind of data structure S is.
+                            Steps are really 
+                            <strong>basic operations such as 
+                            arithmetic operations</strong> (involving reasonably-sized numbers),
+                            <strong>variable assignments, 
+                            comparisons ($\le, \ge, \ldots$)</strong>.
+                        </p>
+
+                        <h4>Big-O Notation</h4>
+                        
+                        <p>
+                            As algorithms get more complicated, so does their analysis. 
+                            This is why we use the Big-O notation when estimating the running time 
+                            of algorithms rather than meticulously counting every single step they take.
+                            For our purposes, it is enough to know that Big-O notation lets us do two things:
+                            <ol>
+                                <li>Disregard constant factors.</li>
+                                <li>Remove lower-order terms in sums.</li>
+                            </ol>
+                            Let us look at the example of 
+                            <code class="insentence">gauss1(n)</code>
+                            which took $2n + 2$ steps.
+                            Using Big-O notation, we can first rewrite
+                            $O(2n + 2) = O(2\cdot n + 2\cdot 1)$,
+                            then use the first rule to observe that
+                            $O(2\cdot n + 2 \cdot 1) = O(n + 1)$,
+                            and then use the second rule which gives 
+                            $O(n + 1) = O(n)$.
+                            This is known as a <em>linear</em> running time.
+                            For 
+                            <code class="insentence">gauss2(n)</code>,
+                            we have $O(4) = O(4 \cdot 1) = O(1)$
+                            by rewriting and applying the first rule.
+                            This is known as a <em>constant</em> running time.
+                        </p>
+
+                        <h4>Worst Case</h4>
+
+                        <p><span class="image right" style="font-size: 0.7em;"><img src='img/cartoon-membership.png' alt=""/>Image credit: ChatGPT</span>
+                            Let us consider another problem: You are given a large collection of numbers,
+                            and you want to verify if a certain number $x$ is contained in that collection.
+                            Your program cannot run longer than one second.
+                            Suppose the numbers are stored in a list,
+                            then we can simply 
+                            loop through its elements one by one, and say yes if $x$ is found, 
+                            and no otherwise:
+                            (Observe that this is essentially what the 
+                            <code class="insentence">in</code>-operator on lists does.)
+                            <pre><code class="python">
+def is_in(x, alist):
+    for i in range(len(alist)):
+        if alist[i] == x:
+            return True
+    return False
+                            </code></pre>
+                            If we are lucky, the element $x$ occurs in the very beginning of 
+                            <code class="insentence">alist</code>
+                            in which case the function 
+                            <code class="insentence">is_in</code>
+                            will return 
+                            <code class="insentence">True</code>
+                            and terminate after just a few steps.
+                            On the other hand, if $x$ is <em>not</em> 
+                            in the list, the function goes through all its elements before returning 
+                            <code class="insentence">False</code>
+                            which might take much longer.
+                            The following graphs show empirical results of timing how long it takes to test 
+                            if the number $i$ is in the list [1, 2, ..., 200000000].
+                            The smaller the number, 
+                            the earlier it appears in the list,
+                            the faster the our program.
+                            <img src="img/timing_list_membership.png" style="width: 100%; max-width: 500px;"/>
+                            <br>
+                            So which case should we base our analysis on?
+                            As we want a <strong>guarantee</strong> of the performance of our program,
+                            we should always focus on the <strong>worst case</strong>:
+                            This way, no matter what our input is exactly like, 
+                            we always know that the program runs within the claimed bound.
+                            So for this task, our program has a running time of $O(n)$,
+                            where $n$ is the length of the list that we are inspecting.
+                            This corresponds to the worst case, when the element we are looking for 
+                            is <em>not</em> contained in the list
+                            and we inspect every single element in the list.
+                        </p>
+
+                        <h4>The table</h4>
+                        It is a good idea to memorize (or write down) 
+                        how big inputs for an algorithm with a certain running time can get 
+                        when you have a 1-second time limit.
+                        Note that these serve only as rough estimates, 
+                        while the running time of your program could in principle 
+                        be heavily influenced by the constants that the Big-O notation 
+                        ignores, so this should be taken with a grain of salt.
+                        <table class="alt">
+                            <caption style="font-size: 0.7em;">
+                                    Feasible input sizes for given running times of algorithms.
+                                    From Hamlin, Hamlin, Effendy - Competitive Programming 4.
+                            </caption>
+                            <tr>
+                                <td>$n \le \ldots$</td><td>Running time</td><td>Comments</td>
+                            </tr>
+                            <tr>
+                                <td>``$\infty$''</td><td>$O(1), O(\log n)$</td><td>Basically anything goes. For $O(\log n)$: binary search</td>
+                            </tr>
+                            <tr>
+                                <td>4.5M</td><td>$O(n\log n)$</td><td>Sorting</td>
+                            </tr>
+                            <tr>
+                                <td>10K</td><td>$O(n^2)$</td><td>2 nested loops</td>
+                            </tr>
+                            <tr>
+                                <td>450</td><td>$O(n^3)$</td><td>3 nested loops</td>
+                            </tr>
+                            <tr>
+                                <td>[24..26]</td><td>$O(2^n)$</td><td>Trying all subsets with constant time check per subset</td>
+                            </tr>
+                            <tr>
+                                <td>[18..22]</td><td>$O(2^n \cdot n)$</td><td>Trying all subsets with linear time check per subset</td>
+                            </tr>
+                            <tr>
+                                <td>[10..11]</td><td>$O(n!)$, $O(n^6)$</td><td>Trying all permutations, 6 nested loops</td>
+                            </tr>
+                        </table>                        
+                        <hr />
+
+                        <h3>2. Lists</h3>
+                        <table class="alt">
+                            <caption style="font-size: 1em;">
+                                Some common commands on and with lists.
+                                Here, 
+                                <code class="insentence">alist</code>
+                                is a list, 
+                                <code class="insentence">x</code>
+                                is an element, and 
+                                <code class="insentence">i</code>
+                                is an index.
+                                We denote by $n$ the length of 
+                                <code class="insentence">alist</code>,
+                                i.e.,
+                                the number of elements it contains.
+                            </caption>
+                            <tr>
+                                <td>Command</td>
+                                <td>Effect</td>
+                                <td>Running Time</td>
+                                <td>Comments</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">x in alist</code></td>
+                                <td>True if <code class="insentence">x</code> is contained in <code class="insentence">alist</code> and False otherwise.</td>
+                                <td>$O(n)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">alist[i] = x</code></td>
+                                <td>Sets the value at position i to x.</td>
+                                <td>$O(1)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">x = alist[i]</code></td>
+                                <td>Sets x to the value at position i in the list.</td>
+                                <td>$O(1)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">alist.append(x)</code></td>
+                                <td>Attaches x to the end of the list.</td>
+                                <td>$O(1)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">alist.pop()</code></td>
+                                <td>Returns and removes the last element from the list</td>
+                                <td>$O(1)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">alist.remove(x)</code></td>
+                                <td>Removes the first occurrence of x in the list.</td>
+                                <td>$O(n)$</td>
+                                <td>Raises an error if x is not in the list.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">alist.index(x)</td>
+                                <td>Returns the first index of x in the list</td>
+                                <td>$O(n)$</td>
+                                <td>Raises an error if x is not in the list.
+                                    <a href="https://open.kattis.com/problems/barcelona">[Sample problem]</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">alist.insert(i, x)</td>
+                                <td>Inserts x at (before) position i in the list.</td>
+                                <td>$O(n)$</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=list'><span class="tag tag-datastructure">list</span></a>
+                        </p>
+
+
+                        <hr />
+
+                        <h3>3. Sorting Lists</h3>
+                        <p>
+                            There are two ways of sorting lists:
+                            <pre><code class='python'>
+alist = [12, 2, 4, 82, 35]
+
+sorted_list = sorted(alist)
+
+alist.sort()
+                            </code></pre>
+                            The first way leaves 
+                            <code class="insentence">alist</code>
+                            untouched and outputs a <em>sorted copy</em> of the elements in 
+                            <code class="insentence">alist</code>.
+                            The second way <em>modifies</em> 
+                            <code class="insentence">alist</code>
+                            so that it is sorted afterwards. 
+                            Notice that this way, we lose information about the original order of the elements.
+                            Both methods can be parameterized in certain ways:
+                        </p>
+                            <p>
+                                The default way of sorting is always in 
+                                <strong>nondecreasing</strong> (increasing, smallest first) order;
+                                if you want to sort in the opposite order, you can pass 
+                                <code class="insentence">reverse=True</code>
+                                as a keyword argument, e.g., 
+                                <code class="insentence">alist.sort(reverse=True)</code>.
+                            </p>
+
+                            <p>
+                                Another convenient keyword argument is 
+                                <code class="insentence">key</code>,
+                                which allows you to specify a function according to which the elements 
+                                in the list should be sorted.
+                                For instance, the following program sorts the strings in the list 
+                                according to their length.
+                                <pre><code class='python'>
+alist = ['hello', 'bye', 'banana', 'cart']
+alist.sort(key=len)
+                                </code></pre>
+                                We can also define our own functions according to which to sort.
+                                For instance, if we want to sort alphabetically according to the second letter 
+                                in the string, we can do the following:
+                                <pre><code>
+def second_letter(x):
+    return x[1]
+
+alist = ['hello', 'bye', 'banana', 'cart']
+alist.sort(key=second_letter)
+                                </code></pre>
+                                When working with lists of tuples of fixed size (e.g., lists of pairs),
+                                this is often very convenient.
+                                By default, tuples are compared according to their first coordinate first, 
+                                then their second, and so on.
+                                But if we want to sort tuples according to their, say, third coordinate, 
+                                we can use the method described above.
+                                As a shortcut, we can use 
+                                <code class="insentence">lambda</code>-functions; 
+                                the example from above can be abbreviated to:
+                                <pre><code class='python'>
+alist.sort(key = lambda x: x[1])
+                                </code></pre>
+                            </p>
+
+                            <p>
+                                <strong>A note on sorting strings in python:</strong>
+                                Python sorts according to <em><a href='https://en.wikipedia.org/wiki/ASCII'>ASCII-betical order</a></em>,
+                                meaning that uppercase letters always come before lowercase letters.
+                                If you want to circumvent this behavior, you can pass 
+                                <code class="insentence">key=str.lower</code>
+                                as a keyword argument.
+                            </p>
+
+                            <p>
+                                <strong>Running Time.</strong>
+                                Sorting a list with $n$ elements takes $O(n\log n)$ time 
+                                (assuming a single comparison can be done in constant time, which is usually the case).
+                                This means that you can sort lists with <strong>up to 4.5M elements</strong> 
+                                in a 1-second time limit.
+                            </p>
+
+                            <p><strong>Practice problems:</strong> 
+                                <a href='../table.html?tagInput=sorting'><span class="tag tag-algorithm">sorting</span></a>
+                            </p>
+                        
+                        <hr />
+
+                        <h3>4. Sets</h3>
+
+                        <p>
+                            Consider the problem about testing if a number is contained in 
+                            a large collection of numbers again, 
+                            but assume this time the numbers are stored in a <em>set</em>.
+                            Then, our program is much more efficient, 
+                            since <strong>testing membership in sets takes only $O(1)$ time</strong>.
+                            We summarize some more common methods regarding sets in the following table.
+                        </p>
+
+                        <table class="alt">
+                            <caption>
+                                Some common methods and operations with sets.
+                                Here, 
+                                <code class="insentence">S, T</code>
+                                are sets and 
+                                <code class="insentence">x</code>
+                                is an element.
+                                We let $n$ denote the size of $S$ when there is one set 
+                                and the size of $S \cup T$ when there are two sets.
+                            </caption>
+                            <tr>
+                                <td>Command</td>
+                                <td>Effect</td>
+                                <td>Running Time</td>
+                                <td>Comments</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">x in S</code></td>
+                                <td>True if $x \in S$ and False otherwise.</td>
+                                <td>$O(1)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">S.add(x)</code></td>
+                                <td>Adds $x$ to $S$.</td>
+                                <td>$O(1)$</td>
+                                <td></td>
+                            </tr><tr>
+                                <td><code class="insentence">S.remove(x)</code></td>
+                                <td>Removes $x$ from $S$</td>
+                                <td>$O(1)$</td>
+                                <td>Raises an error if $x \notin S$.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">S.discard(x)</code></td>
+                                <td>Removes x from the set</td>
+                                <td>$O(1)$</td>
+                                <td>Does <em>not</em> raise an error if $x \notin S$.</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">S.union(T)</code></td>
+                                <td>Returns $S \cup T$</td>
+                                <td>$O(n)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">S.intersection(T)</code></td>
+                                <td>Returns $S \cap T$</td>
+                                <td>$O(n)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">S.intersection_update(T)</code></td>
+                                <td>Sets $S$ to $S \cap T$</td>
+                                <td>$O(n)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">S.difference(T)</code></td>
+                                <td>Returns $S \setminus T$</td>
+                                <td>$O(n)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">S.difference_update(T)</code></td>
+                                <td>Sets $S$ to $S \setminus T$</td>
+                                <td>$O(n)$</td>
+                                <td></td>
+                            </tr>
+                        </table>
+
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=set'><span class="tag tag-datastructure">set</span></a>
+                        </p>
+
+                        <hr />
+
+                        <h4>5. Dictionaries</h4>
+
+                        <p>
+                            Coming soon.
+                        </p>
+
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=dictionary'><span class="tag tag-datastructure">dictionary</span></a>
+                        </p>
+
+                        <hr />
+
+                        <h3>6. Doubly-Ended Queues (Deque)</h3>
+
+                        <p><span class="image right" style="font-size: 0.7em;"><img src='img/queue.png' alt=""/>Image credit: ChatGPT</span>
+                            As we have seen above, the <em>end</em> of lists can be manipulated efficiently.
+                            With 
+                            <code class="insentence">alist.append(x)</code>
+                            we can attach the element x to the list in $O(1)$ time, 
+                            and with
+                            <code class="insentence">alist.pop()</code>,
+                            we can remove the last element in the list in $O(1)$ time. 
+                            In several applications, it is vital to have the same type of access to the <em>first</em> element of a list.
+                            Think for instance about queues: 
+                            whenever a new person arrives, they go to the end of the queue, 
+                            so we should be able to ``append'' efficiently.
+                            And when the next person is called, they should be removed from 
+                            the front of the queue, 
+                            so we would like to be able to ``pop'' the front of the queue efficiently as well.
+                        </p>
+
+                        <p>
+                            A <strong>deque</strong> (doubly-ended queue) is a data structure which provides that. 
+                            It is an ordered data structure, just list a list, 
+                            but it allows for efficiently appending and popping the front (the ``left''). 
+                            To be able to use this data structure, 
+                            you have to import it from the collections module.
+                            Here is how you import it and initialize and empty deque:
+                            <pre><code class='python'>
+from collections import deque
+q = deque()
+                            </code></pre>
+                        </p>
+
+                        <table class="alt">
+                            <caption>
+                                Common methods of the 
+                                <code class="insentence">deque</code>.
+                                Here, 
+                                <code class="insentence">q</code> 
+                                is a deque and 
+                                <code class="insentence">x</code>
+                                is an element.
+                            </caption>
+                            <tr>
+                                <td>Command</td>
+                                <td>Effect</td>
+                                <td>Running Time</td>
+                            </tr>
+                            <tr>
+                                <td><code class='insentence'>q.append(x)</code></td>
+                                <td>Appends x at the end of q.</td>
+                                <td>$O(1)$</td>
+                            </tr>
+                            <tr>
+                                <td><code class='insentence'>q.appendleft(x)</code></td>
+                                <td>Attaches x at the front of q.</td>
+                                <td>$O(1)$</td>
+                            </tr>
+                            <tr>
+                                <td><code class='insentence'>q.pop()</code></td>
+                                <td>Returns and removes the last element of q.</td>
+                                <td>$O(1)$</td>
+                            </tr>
+                            <tr>
+                                <td><code class='insentence'>q.popleft()</code></td>
+                                <td>Returns and removes the first element of q.</td>
+                                <td>$O(1)$</td>
+                            </tr>
+                        </table>
+
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=deque'><span class="tag tag-datastructure">deque</span></a>
+                        </p>
+
+                        <hr />
+
+                        <h3>7. Heaps</h3>
+
+                        <p>
+                            The next data structure we consider may feel somewhat exotic at first, 
+                            but it is in fact a crucial building block of several important algorithms,
+                            and interesting in its own right.
+                            It is a collection that allows you, at any point, 
+                            to <strong>efficiently retrieve and remove the minimum element</strong>.
+                            Let us back up a bit. 
+                            To find the minimum element in a list, we would have to go over all its elements 
+                            and remember the smallest one we have seen so far.
+                            Even when using a set, we would have to take the same approach, 
+                            so they give no improvements for this task.
+                            So in both cases, the running time to find the minimum element is $O(n)$.
+                        </p>
+
+                        <p>
+                            In a <strong>heap</strong>,
+                            the minimum element is always stored in the first position;
+                            therefore we can find it in just $O(1)$ time.
+                            This is often referred to as the <strong>heap-invariant</strong>.
+                            When it comes to <em>removing</em> the minimum element, 
+                            we have to be a bit careful though:
+                            to maintain the heap-invariant, 
+                            we have to use a specific method that takes $O(\log n)$ time.
+                            We can insert into a heap within the same running time.
+                        </p>
+
+                        <p>
+                            Python provides an implementation of the heap-algorithm in the 
+                            <a href='https://docs.python.org/3/library/heapq.html'><code class="insentence">heapq</code>-module 
+                            (link to python doc)</a>.
+                            We can initialize and empty heap as an empty list, 
+                            and then use the functions from the 
+                            <code class="insentence">heapq</code>-module
+                            to manipulate the heap:
+                            <pre><code class='python'>
+import heapq
+
+h = []
+heapq.heappush(h, 5) # Insert 5 to the heap
+heapq.heappush(h, 2)
+heapq.heappush(h, 3)
+print(h[0]) # Access the minimum element 
+heapq.heappop(h) # Remove the minimum element
+                            </code></pre>
+                        </p>
+
+                        <table class="alt">
+                            <caption>
+                                Creating and manipulating heaps.
+                                Here, 
+                                <code class="insentence">h</code> 
+                                is a heap with $n$ elements and 
+                                <code class="insentence">x</code>
+                                is an element.
+                                All operations shown here maintain the heap-invatiant.
+                            </caption>
+                            <tr>
+                                <td>Command</td>
+                                <td>Effect</td>
+                                <td>Running Time</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">h = []</code></td>
+                                <td>Initialize an empty list (heap)</td>
+                                <td>$O(1)$</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">h[0]</code></td>
+                                <td>Access the minimum element in the heap h</td>
+                                <td>$O(1)$</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">heapq.heapify(h)</code></td>
+                                <td>Turns the list h into a heap</td>
+                                <td>$O(n)$</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">heapq.heappush(h, x)</code></td>
+                                <td>Inserts x into the heap.</td>
+                                <td>$O(\log n)$</td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">heapq.heappop(h)</code></td>
+                                <td>Returns and removes the minimum element in h</td>
+                                <td>$O(\log n)$</td>
+                            </tr>
+                        </table>
+
+                        <p>
+                            By default, heaps store the <em>minimum</em> element in the first position.
+                            The variant that prioritizes the maximum elements,
+                            a so called <strong>max-heap</strong>,
+                            is implemented in the heapq-module as well,
+                            but only since python version 3.14!
+                            Simply attach 
+                            <code class="insentence">_max</code>
+                            to the function names from the table above 
+                            to maintain a max-heap, 
+                            for instance
+                            <code class="insentence">heapq.heappush_max(h, x)</code>. 
+                            You can also simulate a max-heap by a min-heap 
+                            and multiplying the priorities by $-1$.
+                        </p>
+
+                        <p><strong>Practice problems:</strong> 
+                            <a href='../table.html?tagInput=heap'><span class="tag tag-datastructure">heap</span></a>
+                        </p>
+
+                        <hr />
+
+                </section>
+            </div>
+    </body>
+</html>

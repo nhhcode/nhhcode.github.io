@@ -67,11 +67,16 @@
                             The strength of your hand is determined by the five strongest cards among 
                             your private and the public cards put together;
                             the strongest hand wins the round.
-                            To estimate how strong you can expect your hand to be against 
-                            the hands of your opponents, you could simply enumerate all possible 
+                            The ranking of poker hands is somewhat nonetrivial,
+                            see <a href="https://en.wikipedia.org/wiki/List_of_poker_hands">here (wikipedia)</a>
+                            for details.
+                            Therefore, to estimate the probability that you have the winning 
+                            hand against an opponent,
+                            you might have to enumerate all possible 
                             remaining hands, and count how many of those you would beat.
                             Since any hand is completely determined by the two private cards,
-                            having two nested loops suffices to consider all possible hands of your opponents.
+                            having two nested loops suffices to consider all hands 
+                            your opponent might have.
                         </p>
                         <pre><code class="python">
 cards = {'AH', '2H', '3H', ...}
@@ -429,7 +434,7 @@ print(topScore)
                             shifts all bits in the binary representation of $n$ by $k$ positions to the left
                             (and attaching $k$ zeros to the end).
                             <pre>
-n:       10011010
+n:          10011010
 n << 3:  10011010000
                             </pre>
                         </p>
@@ -503,7 +508,8 @@ for bm in range(1 << n):
                             Since python supports arbitrary-size integers, bitmasks can in fact be used to 
                             represent much larger sets, but the gain in performance vanishes as the sets 
                             become too large.
-                            As a rule of thumb, using bitmasks on a ground set with <strong>up to 31 elements</strong> 
+                            As a rule of thumb, using bitmasks on a ground set with 
+                            <strong>up to 30 elements</strong> 
                             is always a good idea. After that, you may have to consider other factors.                       
                         </p>
                         <p><strong>Practice problems:</strong> 
