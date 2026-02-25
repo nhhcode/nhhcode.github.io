@@ -243,16 +243,17 @@ for x in A:
         count += 1
                             </code></pre>
                             Suppose for simplicity that  both lists have size $n$.
-                            The outer loop 
-                            (<code class='insentence'>for x in A</code>)
+                            The loop 
+                            <code class='insentence'>for x in A</code>
                             runs for $n$ iterations.
                             As discussed above, <em>in the worst case</em>, 
                             the test 
                             <code class="insentence">x in B</code> takes $O(n)$ time, 
                             even though it may look like a single step at first glance.
-                            Therefore, each iteration of the outer loop in fact takes at most $O(n)$
+                            Therefore, each iteration of the loop in fact takes at most $O(n)$
                             steps, so the running time of the entire program is
-                            $n \cdot O(n) = O(n^2)$.
+                            $n \cdot O(n) = O(n^2)$, 
+                            the number of iterations times the number of steps per iteration.
                         </p>
 
                         <h4>The table</h4>
@@ -380,7 +381,7 @@ for x in A:
 
                         <h3>3. Sorting Lists</h3>
                         <p>
-                            There are two ways of sorting lists:
+                            There are two ways of sorting lists in python:
                             <pre><code class='python'>
 alist = [12, 2, 4, 82, 35]
 
@@ -692,11 +693,11 @@ q = deque()
 import heapq
 
 h = []
-heapq.heappush(h, 5) # Insert 5 to the heap
-heapq.heappush(h, 2)
+heapq.heappush(h, 5) # Insert 5 into the heap
+heapq.heappush(h, 2) # ...
 heapq.heappush(h, 3)
 print(h[0]) # Access the minimum element 
-heapq.heappop(h) # Remove the minimum element
+x = heapq.heappop(h) # Retrieve and remove the minimum element
                             </code></pre>
                         </p>
 
