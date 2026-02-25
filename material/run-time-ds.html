@@ -650,9 +650,9 @@ q = deque()
                             <a class='alt' href="https://en.wikipedia.org/wiki/Binary_tree#complete">complete binary tree</a>
                             where each node corresponds to one entry, with the property that 
                             the value at each node is <em>at most as high as the values at its two children</em>.
-                            This is known as the <strong>heap-invariant</strong>.
+                            This is known as the (min-)<strong>heap-invariant</strong>.
                             As a consequence, the <em>minimum element is always found in the root</em>.
-                            (See the example on the right.)
+                            (See the example.)
                             </div>
                             <div style="margin-bottom: 0.3em;">
                             Why do we need such a data structure? 
@@ -672,6 +672,10 @@ q = deque()
                             Nevertheless, paying this extra $O(\log n)$ for insertions 
                             is often far superior to paying $O(n)$ 
                             each time we want to find and remove the minimum.
+                            <br>
+                            If you want to know how the heap algorithms work, 
+                            you can check this 
+                            <a class='alt' href="https://en.wikipedia.org/wiki/Binary_heap">wikipedia entry</a>.
                             </div>
                             <div style="margin-bottom: 0.3em;">
                             On a low level, heaps can be stored in standard lists.
@@ -679,13 +683,11 @@ q = deque()
                             its two children at positions $1$ and $2$, 
                             and generally, the two children of the node stored at position 
                             $k$ are in positions $2k+1$ and $2k+2$.
-                            If you are want to know how the heap algorithm works, 
-                            you can check this 
-                            <a class='alt' href="https://en.wikipedia.org/wiki/Binary_heap">wikipedia entry</a>.
                             Python's standard distribution provides the
                             <a class='alt' href='https://docs.python.org/3/library/heapq.html'><code class="insentence">heapq</code>-module 
                             (link to python doc)</a>
-                            which contains an implementation of the heap algorithm.
+                            which contains an implementation of the heap algorithm
+                            and lets you manipulate lists that store binary heaps.
                             You can use it as follows:
                             </div>
                         </p>
