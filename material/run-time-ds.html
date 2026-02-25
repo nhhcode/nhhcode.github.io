@@ -136,11 +136,23 @@ def gauss2(n):
                             <code class="insentence">x in S</code>
                             may look like a single step, but the number of steps this takes 
                             crucially depends on what kind of data structure S is.
-                            Steps are really 
+                            Steps are 
                             <strong>basic operations such as 
-                            arithmetic operations</strong> (involving reasonably-sized numbers),
+                            arithmetic operations</strong>,
                             <strong>variable assignments, 
-                            comparisons ($\le, \ge, \ldots$)</strong>.
+                            comparisons 
+                            (<code class="insentence">==, <, <=, ...</code>)</strong>.
+                            <br>
+                            Note that we always assume that the values involved in these basic operations
+                            (numbers, strings, etc) are not excessively big.
+                            As a silly example, suppose we have two strings 
+                            <code class='insentence'>x, y</code>
+                            that both contain 
+                            all texts that humanity has ever produced.
+                            Then, testing 
+                            <code class="insentence">x == y</code>
+                            might still take a considerable amount of time. 
+                            But in general, we rarely have to take such extreme cases into account.
                         </p>
 
                         <h4>Big-O Notation</h4>
@@ -220,6 +232,29 @@ def is_in(x, alist):
                             and we inspect every single element in the list.
                         </p>
 
+                        <h4>Another example</h4>
+                        <p>
+                            Let us consider the following code, which counts how many elements of a list A 
+                            are also contained in another list B.
+                            <pre><code class="python">
+count = 0
+for x in A:
+    if x in B:
+        count += 1
+                            </code></pre>
+                            Suppose for simplicity that  both lists have size $n$.
+                            The outer loop 
+                            (<code class='insentence'>for x in A</code>)
+                            runs for $n$ iterations.
+                            As discussed above, <em>in the worst case</em>, 
+                            the test 
+                            <code class="insentence">x in B</code> takes $O(n)$ time, 
+                            even though it may look like a single step at first glance.
+                            Therefore, each iteration of the outer loop in fact takes at most $O(n)$
+                            steps, so the running time of the entire program is
+                            $n \cdot O(n) = O(n^2)$.
+                        </p>
+
                         <h4>The table</h4>
                         It is a good idea to memorize (or write down) 
                         how big inputs for an algorithm with a certain running time can get 
@@ -238,6 +273,9 @@ def is_in(x, alist):
                             </tr>
                             <tr>
                                 <td>``$\infty$''</td><td>$O(1), O(\log n)$</td><td>Basically anything goes. For $O(\log n)$: binary search</td>
+                            </tr>
+                            <tr>
+                                <td>100M</td><td>$O(n)$</td><td>A few passes over a collection with constant-time check each.</td>
                             </tr>
                             <tr>
                                 <td>4.5M</td><td>$O(n\log n)$</td><td>Sorting</td>
@@ -539,7 +577,7 @@ alist.sort(key = lambda x: x[1])
                             <code class="insentence">alist.pop()</code>,
                             we can remove the last element in the list in $O(1)$ time. 
                             In several applications, it is vital to have the same type of access to the <em>first</em> element of a list.
-                            Think for instance about queues: 
+                            Think for instance about simulating queues: 
                             whenever a new person arrives, they go to the end of the queue, 
                             so we should be able to ``append'' efficiently.
                             And when the next person is called, they should be removed from 
@@ -603,42 +641,53 @@ q = deque()
 
                         <hr />
 
-                        <h3>7. Heaps</h3>
+                        <h3>7. Binary Min-Heaps</h3>
 
-                        <p>
-                            The next data structure we consider may feel somewhat exotic at first, 
-                            but it is in fact a crucial building block of several important algorithms,
-                            and interesting in its own right.
-                            It is a collection that allows you, at any point, 
-                            to <strong>efficiently retrieve and remove the minimum element</strong>.
-                            Let us back up a bit. 
-                            To find the minimum element in a list, we would have to go over all its elements 
-                            and remember the smallest one we have seen so far.
-                            Even when using a set, we would have to take the same approach, 
-                            so they give no improvements for this task.
-                            So in both cases, the running time to find the minimum element is $O(n)$.
+                        <p><span class="image right" style="font-size: 0.7em;"><img src='img/bin-min-heap.png' alt=""/>A binary min-heap with list representation</span>
+                            <div style="margin-bottom: 0.3em;">
+                            A <em>binary min-heap</em> organizes data in a 
+                            <a class='alt' href="https://en.wikipedia.org/wiki/Binary_tree#complete">complete binary tree</a>
+                            where each node corresponds to one entry, with the property that 
+                            the value at each node is <em>at most as high as the values at its two children</em>.
+                            This is known as the <strong>heap-invariant</strong>.
+                            As a consequence, the <em>minimum element is always found in the root</em>.
+                            (See the example on the right.)
+                            </div>
+                            <div style="margin-bottom: 0.3em;">
+                            Why do we need such a data structure? 
+                            Finding the minimum element in lists, or sets, takes $O(n)$ time,
+                            which may be prohibitively slow if we need to perform this operation frequently.
+                            In many applications, such as Dijkstra's algorithm for finding shortest paths,
+                            we repeatedly want to find an element with minimum priority and then remove it.
+                            Naive implementations with lists or sets would require $O(n)$ time each time, 
+                            while in a min-heap, we can 
+                            remove the minimum element in just $O(\log n)$ time,
+                            also ensuring that the heap-invariant is maintained afterwards.
+                            (We can also <em>inspect</em> the minimum element in just $O(1)$ time, 
+                            as it is stored in the root.)
+                            This comes at a slight cost that also inserting into a min-heap takes 
+                            $O(\log n)$ time, as we need to make sure that the heap-invariant 
+                            is maintained after insertion as well.
+                            Nevertheless, paying this extra $O(\log n)$ for insertions 
+                            is often far superior to paying $O(n)$ 
+                            each time we want to find and remove the minimum.
+                            </div>
+                            <div style="margin-bottom: 0.3em;">
+                            On a low level, heaps can be stored in standard lists.
+                            The root is stored at position $0$, 
+                            its two children at positions $1$ and $2$, 
+                            and generally, the two children of the node stored at position 
+                            $k$ are in positions $2k+1$ and $2k+2$.
+                            If you are want to know how the heap algorithm works, 
+                            you can check this 
+                            <a class='alt' href="https://en.wikipedia.org/wiki/Binary_heap">wikipedia entry</a>.
+                            Python's standard distribution provides the
+                            <a class='alt' href='https://docs.python.org/3/library/heapq.html'><code class="insentence">heapq</code>-module 
+                            (link to python doc)</a>
+                            which contains an implementation of the heap algorithm.
+                            You can use it as follows:
+                            </div>
                         </p>
-
-                        <p>
-                            In a <strong>heap</strong>,
-                            the minimum element is always stored in the first position;
-                            therefore we can find it in just $O(1)$ time.
-                            This is often referred to as the <strong>heap-invariant</strong>.
-                            When it comes to <em>removing</em> the minimum element, 
-                            we have to be a bit careful though:
-                            to maintain the heap-invariant, 
-                            we have to use a specific method that takes $O(\log n)$ time.
-                            We can insert into a heap within the same running time.
-                        </p>
-
-                        <p>
-                            Python provides an implementation of the heap-algorithm in the 
-                            <a href='https://docs.python.org/3/library/heapq.html'><code class="insentence">heapq</code>-module 
-                            (link to python doc)</a>.
-                            We can initialize and empty heap as an empty list, 
-                            and then use the functions from the 
-                            <code class="insentence">heapq</code>-module
-                            to manipulate the heap:
                             <pre><code class='python'>
 import heapq
 
@@ -694,8 +743,8 @@ heapq.heappop(h) # Remove the minimum element
                         </table>
 
                         <p>
-                            By default, heaps store the <em>minimum</em> element in the first position.
-                            The variant that prioritizes the maximum elements,
+                            By default, heaps have the <em>minimum</em> as a priority.
+                            The variant that prioritizes the maximum element,
                             a so called <strong>max-heap</strong>,
                             is implemented in the heapq-module as well,
                             but only since python version 3.14!
