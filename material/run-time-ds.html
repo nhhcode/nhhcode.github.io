@@ -546,14 +546,11 @@ alist.sort(key = lambda x: x[1])
                             but each element, if added, 
                             would have its <em>designated index</em>.
                             Meaning that if the element is present in our collection, 
-                            there is only one index at which it is ``allowed'' 
-                            to be stored.
-                            Functions computing such indices this task are called 
+                            there is only one index where it can be stored.
+                            Functions computing such indices are called 
                             <em>hash functions</em>.
                             They take as input any element $x$, and compute its designated index
                             in the data structure.
-                            We guarantee that if we add an element $x$ to our data structure, 
-                            we place it at the index that the hash function computed for $x$.
                             When testing whether an element $x$ is contained in our data structure
                             it therefore suffices to compute the hash of $x$, 
                             giving us its designated index, 
