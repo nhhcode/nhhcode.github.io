@@ -300,6 +300,67 @@ for x in A:
                         <hr />
 
                         <h3>2. Lists</h3>
+
+                        <p>
+                            We briefly discuss common methods on lists and their running times.
+                            Things you can do <strong>efficiently</strong> (i.e., in $O(1)$ time) on lists are:
+                            <strong>Retrieving or setting</strong> the value at any position $i$.
+                            <strong>Appending</strong> a new element <strong>to the end</strong> of the list, 
+                            and <strong>removing the last</strong> element from the list 
+                            (so-called ``popping'').
+                        </p>
+                        <p>
+                            <strong>On the other hand</strong>, the following common methods may take $O(n)$ time 
+                            in the worst case.
+                            As dicussed above, checking whether an element is contained in a list 
+                            may amount to inspecting every single element in it, 
+                            so 
+                            <code class="insentence">x in alist</code>
+                            may take $O(n)$ time.
+                            Similarly, calling 
+                            <code class="insentence">alist.index(x)</code>,
+                            which returns the lowest index $i$ such that 
+                            <code class="insentence">alist[i] == x</code> is true,
+                            might take $O(n)$ steps:
+                            Again, this method loops over the elements of the list 
+                            from front to back and returns the first index satisfying 
+                            the required condition. 
+                            If the first occurrence of $x$ is at, 
+                            for instance, position $n/2$, 
+                            then we perform $O(n)$ unsuccessful checks 
+                            before finding the answer,
+                            so in the worst case, we take $O(n)$ time.
+                        </p>
+                        <p>
+                            While removing the <em>last</em> element can be done efficiently 
+                            using the pop-method,
+                            removing an element from an arbitrary position may take $O(n)$ time.
+                            Consider the case when we want to remove the element that sits roughly 
+                            in the middle of the list, say at index $n/2$.
+                            To make sure that all elements in the second half are at the 
+                            correct position after the removal, 
+                            we have to shift each elements whose index is greater than $n/2$ 
+                            by $-1$.
+                            Since there may be about $n/2 = O(n)$ such elements, 
+                            we perform $O(n)$ operations.
+                            The running time of 
+                            <code class="insentence">alist.remove(x)</code>,
+                            which removes the first occurrence of $x$ in the list,
+                            is therefore $O(n)$ in the worst case.
+                            Calling 
+                            <code class="insentence">alist.insert(i, x)</code>
+                            inserts $x$ at position $i$ of the list and shifts 
+                            all elements that are currently at position $i$ and onwards 
+                            one position to the right (by +1).
+                            Again, in the worst case we might perform $O(n)$ 
+                            such shifts (depending on the value of $i$) 
+                            and therefore the running time is $O(n)$.
+                            (Observe the difference with setting 
+                            <code class="insentence">alist[i] = x</code> 
+                            where we simply override the value that is currently at position $i$ 
+                            in the list.)
+                        </p>
+
                         <table class="alt">
                             <caption style="font-size: 1em;">
                                 Some common commands on and with lists.
@@ -376,23 +437,25 @@ for x in A:
                             <a href='../table.html?tagInput=list'><span class="tag tag-datastructure">list</span></a>
                         </p>
 
-
-                        <hr />
-
-                        <h3>3. Sorting Lists</h3>
+                        <h3>Sorting Lists</h3>
                         <p>
+                            A common task you have to perform with lists is <em>sorting</em>. 
                             There are two ways of sorting lists in python:
                             <pre><code class='python'>
 alist = [12, 2, 4, 82, 35]
 
-sorted_list = sorted(alist)
+sorted_list = sorted(alist) # 1st way
 
-alist.sort()
+alist.sort() # 2nd way
                             </code></pre>
                             The first way leaves 
                             <code class="insentence">alist</code>
                             untouched and outputs a <em>sorted copy</em> of the elements in 
                             <code class="insentence">alist</code>.
+                            Here,  
+                            <code class="insentence">alist</code>
+                            does not necessarily need to be of type list,
+                            but any collection that python can iterate over works.
                             The second way <em>modifies</em> 
                             <code class="insentence">alist</code>
                             so that it is sorted afterwards. 
@@ -433,7 +496,7 @@ alist.sort(key=second_letter)
                                 this is often very convenient.
                                 By default, tuples are compared according to their first coordinate first, 
                                 then their second, and so on.
-                                But if we want to sort tuples according to their, say, third coordinate, 
+                                But if we want to sort tuples according to their second coordinate only, 
                                 we can use the method described above.
                                 As a shortcut, we can use 
                                 <code class="insentence">lambda</code>-functions; 
@@ -466,7 +529,7 @@ alist.sort(key = lambda x: x[1])
                         
                         <hr />
 
-                        <h3>4. Sets</h3>
+                        <h3>3. Sets</h3>
 
                         <p>
                             Consider the problem about testing if a number is contained in 
@@ -474,7 +537,49 @@ alist.sort(key = lambda x: x[1])
                             but assume this time the numbers are stored in a <em>set</em>.
                             Then, our program is much more efficient, 
                             since <strong>testing membership in sets takes only $O(1)$ time</strong>.
-                            We summarize some more common methods regarding sets in the following table.
+                        </p>
+                        <p><!--TODO insert figure (from wikipedia?)-->
+                            This is because sets are implemented using a principle called <strong>hashing</strong>.
+                            On a very high level, this can be explained as follows.
+                            For the sake of argument, assume once more that your data 
+                            is stored in a data structure based on a list, 
+                            but each element, if added, 
+                            would have its <em>designated index</em>.
+                            Meaning that if the element is present in our collection, 
+                            there is only one index at which it is ``allowed'' 
+                            to be stored.
+                            Functions computing such indices this task are called 
+                            <em>hash functions</em>.
+                            They take as input any element $x$, and compute its designated index
+                            in the data structure.
+                            We guarantee that if we add an element $x$ to our data structure, 
+                            we place it at the index that the hash function computed for $x$.
+                            When testing whether an element $x$ is contained in our data structure
+                            it therefore suffices to compute the hash of $x$, 
+                            giving us its designated index, 
+                            and inspecting if the data currently stored at that index 
+                            is equal to $x$.
+                            In this ideal setting, we only had to check the element at a single 
+                            position to tell if $x$ is a member or not, 
+                            rather going through all elements as we did with lists before.
+                            Sets in python (and other programming languages) implement this principle.
+
+                            <br>
+                            There are of course certain pitfalls with this approach, most importantly 
+                            the issue of <em>collisions</em>.
+                            A collision is when our hash function maps two different elements to the same index.
+                            While in theory, this behavior can get arbitrarily bad, 
+                            in practice, we do not have to worry about it,
+                            as there are (both time- and memory-) efficient hash functions 
+                            with great performance.
+                            We can therefore 
+                            view the hash functions underlyings sets as 
+                            black boxes that take $O(1)$ time to compute 
+                            (again, assuming the elements we consider are not prohibilively large),
+                            and that this enables us to do set membership testing in $O(1)$ time.
+                            <br>
+                            Thanks to hasing, also adding and removing elements to/from sets 
+                            can be done in $O(1)$ time.
                         </p>
 
                         <table class="alt">
@@ -507,13 +612,13 @@ alist.sort(key = lambda x: x[1])
                                 <td></td>
                             </tr><tr>
                                 <td><code class="insentence">S.remove(x)</code></td>
-                                <td>Removes $x$ from $S$</td>
+                                <td>Removes $x$ from $S$.</td>
                                 <td>$O(1)$</td>
                                 <td>Raises an error if $x \notin S$.</td>
                             </tr>
                             <tr>
                                 <td><code class="insentence">S.discard(x)</code></td>
-                                <td>Removes x from the set</td>
+                                <td>Removes $x$ from $S$.</td>
                                 <td>$O(1)$</td>
                                 <td>Does <em>not</em> raise an error if $x \notin S$.</td>
                             </tr>
@@ -555,7 +660,7 @@ alist.sort(key = lambda x: x[1])
 
                         <hr />
 
-                        <h4>5. Dictionaries</h4>
+                        <h4>4. Dictionaries</h4>
 
                         <p>
                             Coming soon.
@@ -567,7 +672,7 @@ alist.sort(key = lambda x: x[1])
 
                         <hr />
 
-                        <h3>6. Doubly-Ended Queues (Deque)</h3>
+                        <h3>5. Doubly-Ended Queues (Deque)</h3>
 
                         <p><span class="image right" style="font-size: 0.7em;"><img src='img/queue.png' alt=""/>Image credit: ChatGPT</span>
                             As we have seen above, the <em>end</em> of lists can be manipulated efficiently.
@@ -642,7 +747,7 @@ q = deque()
 
                         <hr />
 
-                        <h3>7. Binary Min-Heaps</h3>
+                        <h3>6. Binary Min-Heaps</h3>
 
                         <p><span class="image right" style="font-size: 0.7em;"><img src='img/bin-min-heap.png' alt=""/>A binary min-heap with list representation</span>
                             <div style="margin-bottom: 0.3em;">
