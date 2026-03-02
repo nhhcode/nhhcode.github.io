@@ -426,16 +426,19 @@ print(topScore)
                             </pre> 
                         </p>
                         <p>
-                            The last operation we want to consider, the <strong>bit-shift</strong>, is easier 
-                            to motivate from a bit-string perspective; 
+                            The last operation we want to consider, the <strong>bit-shift</strong>, 
+                            is easier to motivate from a bit-string perspective; 
                             we explain its significance for bitmasks later.
                             For integers $n$ and $k$,
                             <code class="insentence">n << k</code>
                             shifts all bits in the binary representation of $n$ by $k$ positions to the left
-                            (and attaching $k$ zeros to the end).
+                            (and attaching $k$ zeros to the end), while 
+                            <code class="insentence">n >> k</code>
+                            shifts all bits in the binary representation of $n$ by $k$ positions to the right.
                             <pre>
 n:          10011010
 n << 3:  10011010000
+n >> 4:         1001
                             </pre>
                         </p>
                         <p>
@@ -461,6 +464,31 @@ n << 3:  10011010000
                             Observe that if the $i$-th element is already in $S$, 
                             this operation does not change the bitmask of S.
                         </p>
+                        <p>
+                            One useful application of the right-shift is to check whether 
+                            a set contains the $i$-th element of the ground set.
+                            If we shift the bitmask of $S$ 
+                            by $i$ positions to the right, 
+                            then the first bit of the result is the one 
+                            indicating the presence of absence of the $i$-th element.
+                            If we take the bitwise and with the number 1, i.e.,
+                            <code class="insentence">(S >> i) & 1</code>, 
+                            then this results in 1 if and only if the $i$-th element 
+                            was present in $S$.
+                            <pre>
+S           10011010 (represents {B, D, E, H})
+
+S >> 3         10011
+& 1            00001
+-----------------------------------------------
+                   1 (since D is in S)
+
+S >> 5           100
+& 1              001
+-----------------------------------------------
+                   0 (since F is not in S)
+                            </pre>
+                        </p>
                         <table class="alt">
                             <tr>
                                 <td>Operation</td>
@@ -469,18 +497,27 @@ n << 3:  10011010000
                                 <td>$S \subseteq T$ (subset)</td>
                                 <td>$S \setminus T$ (difference)</td>
                                 <td>Add $i$-th el. to $S$</td>
+                                <td>Check if $i$-th el. in $S$</td>
                             </tr>
                             <tr>
-                                <td>Bit-wise instruction</td>
+                                <td>Instruction</td>
                                 <td><code class="insentence">S | T</code></td>
                                 <td><code class="insentence">S & T</code></td>
                                 <td><code class="insentence">S & T == S</code></td>
                                 <td><code class="insentence">S &~ T</code></td>
                                 <td><code class="insentence">S | (1 << i)</code></td>
+                                <td><code class="insentence">(S >> i) & 1</code></td>
                             </tr>
                         </table>
                         <p>
-                            <strong>Enumerating all subsets (bitmasks).</strong>
+                            <strong>Checking size.</strong> 
+                            To determine the size of the set represented by a bitmask S,
+                            we have to count the number 1s in S.
+                            Python has a built-in function that performs this check efficiently, namely:
+                            <code class="insentence">int.bit_count(S)</code>.
+                        </p>
+                        <p>
+                            <strong>Enumerating all subsets.</strong>
                             Bitmasks give us a direct way to enumerate all subsets of an $n$-element set;
                             in particular, we can loop over all numbers from $0$ to $2^n-1$,
                             in bitmask terms this means going from 
