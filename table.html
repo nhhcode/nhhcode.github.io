@@ -41,7 +41,7 @@
             <button id="resetBtn" onclick="resetSolved()">Reset Solved</button>
           </div>    
 			<div class="table-wrapper">
-								<table id="problemTable">
+				<table id="problemTable">
 				<tr>
 					<th onclick="sortTable(0)">Problem</th>
 					<th onclick="sortTable(1)">Difficulty</th>
@@ -81,8 +81,14 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/towering>A Towering Problem</a></td>
 					<td>1 (Easy)</td>
-					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-misc">permutation</span></td>
+					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-concept">permutation</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/towering'><label for='chk-https://open.kattis.com/problems/towering'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/accomplices>Accomplices</a></td>
+					<td>1.5 (Easy+)</td>
+					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-basic">basic</span><span class="tag tag-datastructure">graph</span><span class="tag tag-concept">subset</span><span class="tag tag-datastructure">bitmask</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/accomplices'><label for='chk-https://open.kattis.com/problems/accomplices'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/addtwonumbers>Add Two Numbers</a></td>
@@ -213,7 +219,7 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/dancerecital>Dance Recital</a></td>
 					<td>2 (Medium)</td>
-					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-misc">permutation</span><span class="tag tag-datastructure">bitmask</span></td>
+					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-concept">permutation</span><span class="tag tag-datastructure">bitmask</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/dancerecital'><label for='chk-https://open.kattis.com/problems/dancerecital'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -231,7 +237,7 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/doubleplusgood>Doubleplusgood</a></td>
 					<td>1.5 (Easy+)</td>
-					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-misc">subset</span></td>
+					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-concept">subset</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/doubleplusgood'><label for='chk-https://open.kattis.com/problems/doubleplusgood'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -243,7 +249,7 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/kvallsfika>Evening Fika</a></td>
 					<td>1 (Easy)</td>
-					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-algorithm">sorting</span></td>
+					<td class="hideable tags"><span class="tag tag-datastructure">list</span><span class="tag tag-algorithm">sorting</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/kvallsfika'><label for='chk-https://open.kattis.com/problems/kvallsfika'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -251,6 +257,12 @@
 					<td>0 (Beginner)</td>
 					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-controlflow">loop</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/vaeltetskorsten'><label for='chk-https://open.kattis.com/problems/vaeltetskorsten'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/fenwick>Fenwick Tree</a></td>
+					<td>1.5 (Easy+)</td>
+					<td class="hideable tags"><span class="tag tag-datastructure">fenwick-tree</span><span class="tag tag-datastructure">binary-indexed-tree</span><span class="tag tag-special">big-input</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/fenwick'><label for='chk-https://open.kattis.com/problems/fenwick'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/figureskating>Figure Skating</a></td>
@@ -285,13 +297,13 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/froshweek2>Frosh Week</a></td>
 					<td>1 (Easy)</td>
-					<td class="hideable tags"><span class="tag tag-algorithm">sorting</span><span class="tag tag-controlflow">loop</span></td>
+					<td class="hideable tags"><span class="tag tag-datastructure">list</span><span class="tag tag-algorithm">sorting</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/froshweek2'><label for='chk-https://open.kattis.com/problems/froshweek2'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/geppetto>Geppetto</a></td>
 					<td>1.5 (Easy+)</td>
-					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-misc">subset</span><span class="tag tag-datastructure">bitmask</span></td>
+					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-concept">subset</span><span class="tag tag-datastructure">bitmask</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/geppetto'><label for='chk-https://open.kattis.com/problems/geppetto'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -329,6 +341,12 @@
 					<td>2 (Medium)</td>
 					<td class="hideable tags"><span class="tag tag-datastructure">set</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/greetingcard'><label for='chk-https://open.kattis.com/problems/greetingcard'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/grid>Grid</a></td>
+					<td>1 (Easy)</td>
+					<td class="hideable tags"><span class="tag tag-datastructure">graph</span><span class="tag tag-algorithm">bfs</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/grid'><label for='chk-https://open.kattis.com/problems/grid'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/gestalisti>Guest List</a></td>
@@ -391,6 +409,12 @@
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/increasingsubsequence'><label for='chk-https://open.kattis.com/problems/increasingsubsequence'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
+					<td><a href=https://open.kattis.com/problems/instagraph>Instagraph</a></td>
+					<td>1 (Easy)</td>
+					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-datastructure">graph</span><span class="tag tag-competition">ncpc</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/instagraph'><label for='chk-https://open.kattis.com/problems/instagraph'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
 					<td><a href=https://open.kattis.com/problems/integerlists>Integer Lists</a></td>
 					<td>1.5 (Easy+)</td>
 					<td class="hideable tags"><span class="tag tag-datastructure">deque</span></td>
@@ -451,6 +475,12 @@
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/leftbeehind'><label for='chk-https://open.kattis.com/problems/leftbeehind'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
+					<td><a href=https://open.kattis.com/problems/lockingdoors>Locking Doors</a></td>
+					<td>2.5 (Medium+)</td>
+					<td class="hideable tags"><span class="tag tag-algorithm">dfs</span><span class="tag tag-concept">scc</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/lockingdoors'><label for='chk-https://open.kattis.com/problems/lockingdoors'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
 					<td><a href=https://open.kattis.com/problems/mancala>Mancala</a></td>
 					<td>1 (Easy)</td>
 					<td class="hideable tags"><span class="tag tag-principle">simulation</span></td>
@@ -461,6 +491,12 @@
 					<td>0 (Beginner)</td>
 					<td class="hideable tags"><span class="tag tag-basic">basic</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/memoriesofpassportcontrol'><label for='chk-https://open.kattis.com/problems/memoriesofpassportcontrol'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/moneymatters>Money Matters</a></td>
+					<td>1 (Easy)</td>
+					<td class="hideable tags"><span class="tag tag-datastructure">graph</span><span class="tag tag-algorithm">bfs</span><span class="tag tag-algorithm">dfs</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/moneymatters'><label for='chk-https://open.kattis.com/problems/moneymatters'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/muchroomformushrooms>Much Room for Mushrooms</a></td>
@@ -543,7 +579,7 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/sortofsorting>Sort of Sorting</a></td>
 					<td>1 (Easy)</td>
-					<td class="hideable tags"><span class="tag tag-algorithm">sorting</span></td>
+					<td class="hideable tags"><span class="tag tag-datastructure">list</span><span class="tag tag-algorithm">sorting</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/sortofsorting'><label for='chk-https://open.kattis.com/problems/sortofsorting'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -557,6 +593,12 @@
 					<td>1 (Easy)</td>
 					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-controlflow">loop</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/stopwatch'><label for='chk-https://open.kattis.com/problems/stopwatch'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/supercomputer>Supercomputer</a></td>
+					<td>1.5 (Easy+)</td>
+					<td class="hideable tags"><span class="tag tag-datastructure">fenwick-tree</span><span class="tag tag-datastructure">binary-indexed-tree</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/supercomputer'><label for='chk-https://open.kattis.com/problems/supercomputer'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/sweetdreams>Sweet Dreams</a></td>
@@ -573,7 +615,7 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/testingleds>Testing LEDs</a></td>
 					<td>1 (Easy)</td>
-					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-controlflow">loop</span><span class="tag tag-algorithm">sorting</span></td>
+					<td class="hideable tags"><span class="tag tag-datastructure">list</span><span class="tag tag-algorithm">sorting</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/testingleds'><label for='chk-https://open.kattis.com/problems/testingleds'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -581,6 +623,12 @@
 					<td>2 (Medium)</td>
 					<td class="hideable tags"><span class="tag tag-algorithm">binary-search</span><span class="tag tag-principle">bsta</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/trollkarlentheodor'><label for='chk-https://open.kattis.com/problems/trollkarlentheodor'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/triangelfabriken>Triangle Factory</a></td>
+					<td>0 (*Beginner)</td>
+					<td class="hideable tags"><span class="tag tag-basic">basic</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/triangelfabriken'><label for='chk-https://open.kattis.com/problems/triangelfabriken'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/vacationspace>Vacation Space</a></td>
@@ -599,6 +647,18 @@
 					<td>0 (Beginner)</td>
 					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-controlflow">loop</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/waterslidewasteeasy'><label for='chk-https://open.kattis.com/problems/waterslidewasteeasy'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/weakvertices>Weak Vertices</a></td>
+					<td>0.5 (Beginner+)</td>
+					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-datastructure">graph</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/weakvertices'><label for='chk-https://open.kattis.com/problems/weakvertices'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/wedding>Wedding</a></td>
+					<td>2.5 (Medium+)</td>
+					<td class="hideable tags"><span class="tag tag-problem">2-sat</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/wedding'><label for='chk-https://open.kattis.com/problems/wedding'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/whatdoesthefoxsay>What does the fox say?</a></td>
