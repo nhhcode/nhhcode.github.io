@@ -41,7 +41,7 @@
             <button id="resetBtn" onclick="resetSolved()">Reset Solved</button>
           </div>    
 			<div class="table-wrapper">
-				<table id="problemTable">
+								<table id="problemTable">
 				<tr>
 					<th onclick="sortTable(0)">Problem</th>
 					<th onclick="sortTable(1)">Difficulty</th>
@@ -129,8 +129,14 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/barcelona>Barcelona</a></td>
 					<td>0 (Beginner)</td>
-					<td class="hideable tags"><span class="tag tag-datastructure">list</span></td>
+					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-datastructure">list</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/barcelona'><label for='chk-https://open.kattis.com/problems/barcelona'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/betterdice>Better Dice</a></td>
+					<td>1 (Easy)</td>
+					<td class="hideable tags"><span class="tag tag-principle">brute-force</span><span class="tag tag-controlflow">nested-loops</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/betterdice'><label for='chk-https://open.kattis.com/problems/betterdice'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/blackthorn>Blackthorn</a></td>
@@ -367,6 +373,12 @@
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/hackaholics'><label for='chk-https://open.kattis.com/problems/hackaholics'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
+					<td><a href=https://open.kattis.com/problems/hackyordering>Hacky Ordering</a></td>
+					<td>2 (Medium)</td>
+					<td class="hideable tags"><span class="tag tag-datastructure">digraph</span><span class="tag tag-concept">topological-order</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/hackyordering'><label for='chk-https://open.kattis.com/problems/hackyordering'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
 					<td><a href=https://open.kattis.com/problems/halloweenloot>Halloween Loot</a></td>
 					<td>2.5 (Medium+)</td>
 					<td class="hideable tags"><span class="tag tag-principle">dp</span></td>
@@ -399,7 +411,7 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/everywhere>I've Been Everywhere Man</a></td>
 					<td>0 (Beginner)</td>
-					<td class="hideable tags"><span class="tag tag-datastructure">set</span></td>
+					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-datastructure">set</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/everywhere'><label for='chk-https://open.kattis.com/problems/everywhere'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -407,6 +419,12 @@
 					<td>2 (Medium)</td>
 					<td class="hideable tags"><span class="tag tag-algorithm">binary-search</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/icegrowth'><label for='chk-https://open.kattis.com/problems/icegrowth'><i class='fa-solid fa-flag-checkered'></i></label></td>
+				</tr>
+				<tr>
+					<td><a href=https://open.kattis.com/problems/idleterminal>Idle Terminal</a></td>
+					<td>1.5 (Easy+)</td>
+					<td class="hideable tags"><span class="tag tag-datastructure">heap</span></td>
+					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/idleterminal'><label for='chk-https://open.kattis.com/problems/idleterminal'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
 					<td><a href=https://open.kattis.com/problems/increasingsubsequence>Increasing Subsequence</a></td>
@@ -417,7 +435,7 @@
 				<tr>
 					<td><a href=https://open.kattis.com/problems/instagraph>Instagraph</a></td>
 					<td>1 (Easy)</td>
-					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-datastructure">graph</span><span class="tag tag-competition">ncpc</span></td>
+					<td class="hideable tags"><span class="tag tag-basic">basic</span><span class="tag tag-datastructure">graph</span><span class="tag tag-datastructure">digraph</span><span class="tag tag-competition">ncpc</span></td>
 					<td><input type='checkbox' class='checkbox-solved' id='chk-https://open.kattis.com/problems/instagraph'><label for='chk-https://open.kattis.com/problems/instagraph'><i class='fa-solid fa-flag-checkered'></i></label></td>
 				</tr>
 				<tr>
@@ -698,7 +716,7 @@
 				</tr>
 				</table>		
 			</div>
-				</div>
+		  </div>
 			</section>
 		<!-- Footer -->
 			<footer id="footer">

@@ -299,6 +299,7 @@ for x in A:
                         </table>                        
                         <hr />
 
+                        <div id="rt-lists">
                         <h3>2. Lists</h3>
 
                         <p>
@@ -434,8 +435,9 @@ for x in A:
                             </tr>
                         </table>
                         <p><strong>Practice problems:</strong> 
-                            <a href='../table.html?tagInput=list'><span class="tag tag-datastructure">list</span></a>
+                            <a href='../table.html?tagInput=basic+list'><span class="tag tag-datastructure">list</span></a>
                         </p>
+                        </div>
 
                         <h3>Sorting Lists</h3>
                         <p>
@@ -652,7 +654,7 @@ alist.sort(key = lambda x: x[1])
                         </table>
 
                         <p><strong>Practice problems:</strong> 
-                            <a href='../table.html?tagInput=set'><span class="tag tag-datastructure">set</span></a>
+                            <a href='../table.html?tagInput=basic+set'><span class="tag tag-datastructure">set</span></a>
                         </p>
 
                         <hr />
@@ -778,6 +780,8 @@ q = deque()
                             If you want to know how the heap algorithms work, 
                             you can check this 
                             <a class='alt' href="https://en.wikipedia.org/wiki/Binary_heap">wikipedia entry</a>.
+                            What makes heaps so efficient is that all its operations can be performed within a time bound 
+                            that is proportional to the <em>height</em> of the tree representation, which is roughly $\log n$.
                             </div>
                             <div style="margin-bottom: 0.3em;">
                             On a low level, heaps can be stored in standard lists.
