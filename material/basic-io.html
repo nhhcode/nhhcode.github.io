@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>NHH Code - Basic IO</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/skel.min.js"></script>
+		<script src="../js/skel-layers.min.js"></script>
+		<script src="../js/init.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+		<link rel="stylesheet" href="../css/skel.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/style-xlarge.css" />
+		<link rel="stylesheet" href="../css/style-tags.css"/>
+		<!--[if lte IE 8]><script src="../js/html5shiv.js"></script><![endif]-->
+        <!-- highlight.js CSS (theme) -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+		<!-- highlight.js JS + Python language (or the full build) -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+		<script>
+            window.MathJax = {
+                tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+            };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="../index.html">NHH Code</a></h1>
+			</header>
+
+            <div class="container">
+
+                <section id="main" class="wrapper">
+
+                    <header class="major">
+							<h2>Input-Output Essentials</h2>
+                        <p>How to interact with Kattis</p>
+                        
+					</header>
+					
+					<hr />
+
+					<div>
+
+					<p><span class="image right" style="font-size: 0.7em;"><a href='https://open.kattis.com/problems/echoechoecho'><img src='img/kattis-echoechoecho.png' alt=""/></a><a href='https://open.kattis.com/problems/echoechoecho'>A kattis problem example</a></span>
+						All kattis problems come with some description of the problem 
+						to be solved, followed by input- and output-specifications, 
+						see the example of the 
+						<a href="https://open.kattis.com/problems/echoechoecho">Echo Echo Echo</a>
+						problem. 
+						The sample inputs show you some concrete test cases your program will 
+						be run on, and the respective sample outputs show exactly what your program 
+						should output on each case.
+						The first part of your program is usually devoted to 
+						reading the input and putting the data into a format so 
+						that you can use it for further processing.
+						The last part of your program is to output your solution 
+						to the problem.
+					</p>
+
+					<h3>Reading first input</h3>
+					<p>
+						Typically, a kattis problem has at least one line of input. 
+						You process the input line by line. 
+						Each call to the 
+						<code class="insentence">input()</code>-function 
+						retrieves <em>one line of input</em>, 
+						which you can store in a variable.
+						This variable is always of the type 
+						<code class="insentence">string</code>,
+						and you might need further processing to get the input into a usable shape 
+						(see <a class='alt' href='#processing_input'>below</a>).
+						In the example 
+						Echo Echo Echo problem, 
+						we have only one line of input and 
+						we do not need further processing.
+						We can therefore proceed as follows:
+					</p>
+					<pre><code class="'python">
+# Store one line of input in the variable word.
+word = input()
+					</code></pre>
+					<p>
+						When testing your program, for each call to the 
+						<code class="insentence">input()</code>-function
+						you have to enter one line of text into the console/terminal 
+						where your program is run.
+					</p>
+
+					<h3>Writing output</h3>
+					<p>
+					Kattis regards <strong>anything written to standard output</strong> 
+					(appearing in the console/terminal)
+					as part of the output of your program. 
+					In python,
+					you can write to standard output by using the 
+					<code class="insentence">print()</code>-function.
+					The following code shows two ways of solving Echo Echo Echo 
+					using two different ways of invoking 
+					<code class="insentence">print()</code>.
+					<pre><code>
+# Repeat the word three times with a blank in between.
+# Use the strip()-method to remove the last blank symbol.
+result = ((word + ' ')*3).strip()
+print(result)
+
+# Another solution
+print(word, word, word)
+					</code></pre>
+					</p>
+					<p><strong>Important!</strong>
+						A common beginner's mistake is to write a message when asking for input,
+						e.g., 
+						when part of the input is someone's age, writing 
+						<code class="insentence">input('What is your age?')</code>.
+						In this case, the message 
+						<code class="insentence">'What is your age?'</code>
+						will be written to standard output, and therefore,
+						kattis will consider it to be part of the 
+						<em>output</em> of your program. 
+						Therefore, even if your program outputs the correct answer 
+						in the end, kattis will reject your submission due to 
+						the additional unexpected message.
+					</p>
+
+					<p><strong>Practice problems:</strong>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/hello">Hello World!</a></span>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/hello">Velkomin!</a></span>
+					</p>
+
+					<h3 id="processing_input">Processing input</h3>
+					<p><span class="image right" style="font-size: 0.7em;"><a href='https://open.kattis.com/problems/leggjasaman'><img src='img/kattis-leggja_saman.png' alt=""/></a><a href='https://open.kattis.com/problems/leggjasaman'>Another kattis problem example</a></span>
+						In many problems, at least some part of the input is numeric,
+						for a simple example see the
+						<a href="https://open.kattis.com/problems/leggjasaman">Leggja Saman</a>
+						problem shown here.
+						Here the input consists of two lines that each contain 
+						one integer.
+						We can read the input by calling the 
+						<code class="insentence">input()</code>-function 
+						twice, once for each line. 
+						After that, the two numbers will be stored as strings, 
+						and we have to <strong>convert</strong> them to integers 
+						before we can proceed. 
+						This is done using the 
+						<code class="insentence">int()</code>-function, 
+						passing the string representing a number as an argument.
+					</p>
+					<pre><code class='python'>
+a = input()
+b = input()
+a = int(a)
+b = int(b) 
+
+# Alternative
+a = int(input())
+b = int(input())
+					</code></pre>
+					<p>
+						If the number was not an integer but a floating point number, 
+						you can use the 
+						<code class="insentence">float()</code>-function 
+						analogously.
+					</p>
+					<p><strong>.split()</strong>
+						Another common type of input is to have several 
+						items (words, integers, ...) separated by a space and
+						written on a <em>single</em> line, 
+						and you have to be able to access each item on the line separately. 
+						See for instance the 
+						<a class='alt' href="https://open.kattis.com/problems/addtwonumbers">Add Two Numbers</a> 
+						problem.
+						In python, you can use the 
+						<code class="insentence">split()</code>-method on a string 
+						splits a string into separate ``words''; it makes a new word whenever at least one 
+						space-symbol is encountered in the string.
+						If you know how many words the string will contain, 
+						which is often the case in kattis problems,
+						you can assign each word to a separate variable directly:
+					</p>
+					<pre><code class='python'>
+>>> x = 'hello    47 bye'
+>>> a, b, c = x.split()
+
+>>> print(a)
+hello
+>>> print(b)
+47
+>>> print(c)
+bye
+					</code></pre>
+					<p>
+						If a line of input contains a fixed number of integers or floats, 
+						you can use the following shortcuts.
+					</p>
+					<pre><code class="python">
+# Reading three integers
+a, b, c = map(int, input().split())
+
+# Reading four floats
+a, b, c, d = map(float, input().split())
+					</code></pre>
+
+					<p><strong>Space-separated sequences (of numbers).</strong>
+						If you do not know in advance how many words there are, 
+						then you can store the result of the 
+						<code class='insentence'>split()</code>-method in a single variable,
+						as it returns a 
+						<code class="insentence">list</code>
+						of the words in the given string.
+						In many problems, some input-line consists of a sequence of space-separated numbers;
+						to immediately obtain a python list with the values stored as integers or floats, 
+						you can use the following instructions:
+					</p>
+					<pre><code class="python">
+# Reading a list of integers from standard input.
+numbers = [int(x) for x in input().split()]
+
+# Reading a list of floating point numbers from standard input.
+numbers = [float(x) for x in input().split()]
+					</code></pre>
+
+					<p><strong>Practice problems:</strong>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/classphoto">Class Photo</a></span>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/addtwonumbers">Add Two Numbers</a></span>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/reduplikation">Reduplication</a></span>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/licensetolaunch">License to Launch</a></span>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/barcelona">Barcelona</a></span>
+					</p>
+
+					<h3>Dealing with big input and output</h3>
+					<p>
+						For most problems, the 
+						<code class="insentence">input()</code>- and
+						<code class="insentence">print()</code>-functions 
+						are efficient enough. 
+						However, for problems with <em>huge</em> inputs, 
+						they might become too slow, and result in a TLE verdict 
+						even if your solution is otherwise fast enough. 
+						You need to use another, more efficient 
+						mechanism to deal with input and output.
+					</p>
+					<p>
+						A first thing is to replace the 
+						<code class="insentence">input()</code>-function with the 
+						<code class="insentence">sys.stdin.readline()</code>-function 
+						for reading a single line of input. 
+						To do so, you must import the 
+						<code class="insentence">sys</code>-module 
+						into your program, so the first line of your program should be 
+						<code class="insentence">import sys</code>.
+						For faster ouput, replace the 
+						<code class="insentence">print()</code>-function with the 
+						<code class="insentence">sys.stdin.write()</code>-function.
+						Note however that the latter does not move to the beginning next line 
+						after writing, so you manually have to insert the newline-character 
+						<code class="insentence">'\n'</code>
+						to achieve that.
+						Furthermore, you have to make sure that the argument passed to 
+						the write-function is of type 
+						<code class="insentence">string</code>.
+					</p>
+					<p><strong>Buffering.</strong>
+						Another method to speed up the input- output-operations is to use <em>buffering</em>.
+						This means that your program runs in three stages:
+						1. Reading all input. 2. Solving the problem. 3. Writing all output. 
+						You have to make sure that these three stages do not overlap. 
+						Buffering means that you first store all inputs in a long list,
+						then store all lines you want to output in another list, 
+						and then dumping all output at the end, like so:
+					</p>
+					<pre><code class="python">
+import sys 
+
+# Assuming there are n lines of input
+# Stage 1.
+in_buffer = [] 
+for _ in range(n):
+    buffer.append(sys.stdin.readline())
+
+out_buffer = [] 
+# Stage 2. Append all output to out_buffer, one entry per line, of type string. 
+# ... 
+
+# Stage 3. Output dumping 
+sys.stdout.write('\n'.join(out_buffer))
+					</code></pre>
+					<p><strong>Practice problems:</strong> 
+                        <a href='../table.html?tagInput=big-input'><span class="tag tag-special">big-input</span></a>
+                    </p>
+
+					</div>
+
+                </section>
+            </div>
+    </body>
+</html>
