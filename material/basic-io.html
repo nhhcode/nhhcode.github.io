@@ -278,10 +278,8 @@ numbers = [float(x) for x in input().split()]
 						Another method to speed up the input- output-operations is to use <em>buffering</em>.
 						This means that your program runs in three stages:
 						1. Reading all input. 2. Solving the problem. 3. Writing all output. 
-						You have to make sure that these three stages do not overlap. 
-						Buffering means that you first store all inputs in a long list,
-						then store all lines you want to output in another list, 
-						and then dumping all output at the end, like so:
+						You have to make sure that these three stages do not overlap,
+						like so:
 					</p>
 					<pre><code class="python">
 import sys 
@@ -290,11 +288,15 @@ import sys
 # Stage 1.
 in_buffer = [] 
 for _ in range(n):
-    buffer.append(sys.stdin.readline())
+    in_buffer.append(sys.stdin.readline())
 
 out_buffer = [] 
-# Stage 2. Append all output to out_buffer, one entry per line, of type string. 
-# ... 
+# Stage 2. Solve the problem. 
+# To retrieve input, iterate over in_buffer.
+for line in in_buffer:
+    # ...
+    # If any output is produced, append it to out_buffer; 
+    # one entry per line, and of type string.
 
 # Stage 3. Output dumping 
 sys.stdout.write('\n'.join(out_buffer))

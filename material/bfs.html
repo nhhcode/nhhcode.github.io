@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--
+	Transit by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>NHH Code - BFS</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/skel.min.js"></script>
+		<script src="../js/skel-layers.min.js"></script>
+		<script src="../js/init.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+		<link rel="stylesheet" href="../css/skel.css" />
+		<link rel="stylesheet" href="../css/style.css" />
+		<link rel="stylesheet" href="../css/style-xlarge.css" />
+		<link rel="stylesheet" href="../css/style-tags.css"/>
+		<!--[if lte IE 8]><script src="../js/html5shiv.js"></script><![endif]-->
+        <!-- highlight.js CSS (theme) -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+		<!-- highlight.js JS + Python language (or the full build) -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        <script>
+            window.MathJax = {
+                tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+            };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<h1><a href="../index.html">NHH Code</a></h1>
+			</header>
+
+            <div class="container">
+
+                <section id="main" class="wrapper">
+
+                    <header class="major">
+						<h2>Graph Traversals I. Breadth-First Search (BFS)</h2>
+                        <p>and some applications</p>
+					</header>
+  
+                    <hr />
+
+                    <p>
+                        One of the most fundamental questions you can ask about a graph 
+                        $G$ is: given one of its vertices $v \in V(G)$, 
+                        what other vertices in $G$ can we reach from $v$ 
+                        by repeatedly moving along the edges of $G$?
+                        <em>Graph traversals</em> are algorithms that systematically 
+                        (and very efficiently!) explore the vertices of a graph, 
+                        starting from a given vertex; 
+                        thereby enabling us to answer the previous question
+                        and, as we see below,
+                        some other interesting questions about the structure of a graph as well.
+                        <em>Breadth-first search (BFS)</em> is one such graph traversal.
+                        Among its killer applications are computing 
+                        shortest paths in unweighted graphs 
+                        and testing whether a graph is bipartite 
+                        (has no cycles of odd length).                        
+                    </p>
+
+                    <hr/>
+
+                    <h3>1. How it works</h3>
+                    <p><span class="image right" style="font-size: 0.7em;">
+                            <img id='bfsAnim' onclick="toggleBFSAnimation()" src='img/bfs/bfs-06.png' alt=""/>
+                        Illustration of the principle of a BFS starting in vertex $1$. 
+                        Click the image to start the animation.
+                        </span>
+                        A breadth-first search of a graph $G$ starting in a vertex $v \in V(G)$ 
+                        explores the graph in <strong>layers</strong>,
+                        moving further and further away from the starting vertex $v$.
+                        (If you can stomach it) 
+                        you may mentalize this process like the growing 
+                        of a mold starting in a fixed position and spreading in all directions at equal speed, see 
+                        <a class="alt" href="https://youtu.be/IQ8Br_sUfI8?si=kUbz1XfMBpRH-cCh&t=20">this youtube-video</a> 
+                        for a nice illustration (recommendation: playback speed between 0.25x and 0.5x). 
+                        The initial layer $L_0$
+                        contains only the vertex $v$ itself,
+                        the first layer $L_1$ contains the neighbors of $v$, 
+                        the second layer $L_2$ contains the neighbors of 
+                        the vertices in $L_1$ that have not been explored yet, i.e.,
+                        that are not contained 
+                        in $L_0 \cup L_1$. 
+                        Generally, 
+                        the $i$-th layer contains the neighbors of the 
+                        $(i-1)$-th layer that 
+                        have not been explored so far, meaning they 
+                        are neither in layer $i-1$ nor in layer $i-2$, 
+                        or any earlier layer.
+                        Formally, 
+                        $L_i = N_G(L_{i-1}) \setminus (L_{i-1} \cup L_{i-2})$.
+                        Note that no pair of adjacent vertices can ever be 
+                        further than one layer apart from each other, 
+                        so we do not need to explicitly disregard vertices from any layer 
+                        $L_j$ with $j < i-2$ in this expression.
+                    </p>
+                    <p>
+                        We now discuss how to implement this strategy efficiently.
+                        To remember which vertices are currently within the reach of our search,
+                        we <strong>mark</strong> them.
+                        Whenever we reach a new vertex $u$, we perform the following 
+                        <strong>visit</strong>ing procedure:
+                        we consider all neighbors $w$ of $u$, 
+                        and if $w$ is unmarked, we mark it and remember that $w$ should be visited soon.
+                        To ensure that this procedure visits the vertices 
+                        in layers as described in the previous paragraph, 
+                        we use a first-in first-out queue to keep track of 
+                        the vertices to visit next.
+                        This way we ensure that the earlier we marked a vertex, 
+                        the earlier it will be visited; 
+                        in particular, the vertices of any given layer will be enlisted in
+                        and retrieved from the queue consecutively.
+                        We can implement a BFS in python as follows. 
+                        We assume that the graph is provided in the 
+                        <a class='alt' href='graphs-intro.html#nb-sets'>neighborhood set</a> 
+                        format.
+                    </p>
+                    <pre><code class='python'>
+from collections import deque
+
+def bfs(graph, v):
+    marked = set()
+    marked.add(v) # Initially, only the starting vertex v is marked.
+    q = deque([v]) # The queue with vertices to visit next.
+    while q: # while there are vertices left to visit
+        u = q.popleft() # get and remove the vertex from the front of the queue
+        for v in graph[u]: # visit u
+            if v not in marked: # for each unmarked neighbor v of u
+                marked.add(v) # mark v
+                q.append(v) # add v to the end of the queue
+    return marked
+                    </code></pre>
+                    <p>
+                        As we need to both be able to remove the front of the queue 
+                        and attach to the end of the queue repeatedly in the above algorithm,
+                        we used a
+                        <a class = "alt" href="run-time-ds.html#header-deque">doubly-ended queue (deque)</a>
+                        data structure to represent the queue.
+                        This data structure provides methods that perform both of these operations in $O(1)$ time.
+                    </p>
+
+                    <p><strong>Running time.</strong>
+                        Each vertex is marked and appended to the queue at most once (see the innermost if-statement).
+                        Therefore, each vertex is <em>visited</em> at most once.
+                        This in turn implies that each edge $uv \in E(G)$ is considered at most twice: 
+                        once when visiting $u$ and once when visiting $v$.
+                        The remaining operations can be performed in $O(1)$ time, 
+                        thanks to the efficient deque data structure.
+                        This means the overall running time is $O(|V(G)| + |E(G)|)$, 
+                        or <em>linear</em> in the size of the graph.
+                    </p>
+
+                    <hr/>
+
+                    <h3>2. Computing connected components</h3>
+                    <p>
+                        To build your intuition, take a moment and think about the following question;
+                        you may look at the graph above for an example:
+                        <em>When a BFS starting in vertex $v$ finishes, 
+                        what exactly are the vertices that have been marked?</em>
+                    </p>
+                    <p>
+                        The marked vertices are precisely those that can be reached from $v$ 
+                        by moving along any number of edges,
+                        in other words, all vertices that are connected to $v$ via a <strong>path</strong>
+                        (a sequence of distinct vertices $v_1, \ldots, v_\ell$ 
+                        such that $v_1 = v$ and $v_i v_{i+1} \in E(G)$ for all $i$).
+                        This set of vertices is known as the 
+                        <strong>(connected) component of $G$ containing $v$</strong>.
+                        In the example above, the marked vertices after the BFS starting in $1$ are 
+                        $\{1, 2, 3, 4, 5, 6, 7, 8\}$ (the connected component containing $v$), 
+                        and the unmarked ones are $\{9, 10, 11\}$.
+                    </p>
+                    <p>
+                        If we want to compute <em>all</em> connected components of a graph, 
+                        we can first store a copy $U$ of $V(G)$
+                        as the set of <em>unmarked</em> vertices, 
+                        take any unmarked vertex $u \in U$, compute its connected component $C_u$ 
+                        using the algorithm above, 
+                        remove $C_u$ from $U$, and repeat until $U$ is empty.
+                        Once no vertex is unmarked, every vertex has been visited,
+                        so we have computed all connected components.
+                    </p>
+
+                    <p>
+                        <strong>Practice problems:</strong>
+                        <span class="tag tag-problem"><a href="https://open.kattis.com/problems/wheresmyinternet">Where's My Internet??</a></span>
+						<span class="tag tag-problem"><a href="https://open.kattis.com/problems/moneymatters">Money Matters</a></span>
+                    </p>
+                    
+                    <hr/>
+
+                    <h3>3. Computing shortest paths...</h3>
+                    <p>
+                        One of the most fundamental graph problems in computer science is the Shortest Path problem,
+                        where we are given a graph $G$ with edge weights, and two vertices $s, t \in V(G)$,
+                        and we want to find a path in $G$ going from $s$ to $t$ with overall minimum weight. 
+                        Think of the graph as a map; its vertices are the cities, the edges tell you 
+                        between which cities you can travel and the weights say how long it takes to 
+                        go from one city to another;
+                        $s$ as a city where you want to start a trip and $t$ the destination.
+                        The shortest path from $s$ to $t$ would tell you the quickest way of travelling from $s$ to $t$. 
+                    </p>
+                    <p>
+                        While BFS cannot handle edge-weights, 
+                        there are two interesting subcases of the Shortest Path problem 
+                        that can be solved with the BFS-principle.
+                    </p>
+
+                    <h4>3.1 ...in unweighted graphs</h4>
+                    <p>
+                        The first case is when all edges have the same weight, say $1$. 
+                        Then, a shortest path is one that <em>minimizes the number of edges</em>.
+                        If we start a BFS in vertex $s$, then the distance to vertex $t$ is simply 
+                        its <em>layer number</em> (see the graph above for an example).
+                        A vertex being in layer $i$ means that we can reach it by moving over $i$ 
+                        edges. Therefore, if the layer number of $t$ is $i$,
+                        then there is a path $v_0, v_1, \ldots, v_i$ with $v_0 = s$ and $v_i = t$, 
+                        meaning the shortest path from $s$ to $t$ has length at most $i$. 
+                        Now suppose that the shortest path from $s$ to $t$ has length strictly less than $i$.
+                        We can argue that in that case, the layer number of $t$ would have been less than $i$ as well.
+                        To get an idea of that, recall that the vertices in layer $2$ 
+                        are the ones that are reachable by going via $2$ edges from $s$ 
+                        <em>but not via a single edge</em>.
+                        If a vertex is reachable from $s$ by a single edge, it is a neighbor of $s$ 
+                        and therefore placed in layer $1$.
+                        This principle generalizes, in the sense that the vertices in layer $i$ 
+                        are reachable from $s$ by a path of length $i$, 
+                        but not by a path of length at most $i-1$; 
+                        otherwise they would have been placed into an earlier layer. 
+                    </p>
+                    <p>
+                        Let us see how to modify the above code to compute the layer numbers of vertices as well.
+                        Say we want to start a BFS at vertex $v$. 
+                        We use an additional dictionary and initially, 
+                        we only set the layer number of $v$ to $0$.
+                        That is, we add the following line to the initialization phase of the BFS:
+                        <pre><code class='python'>
+layer = {v : 0}
+                        </code></pre>
+                        To correctly compute the layer number of the remaining vertices, 
+                        we proceed as follows. 
+                        We know that a vertex is in layer $i$ if
+                        it is marked as a neighbor of a vertex from layer $i-1$ being visited.
+                        Therefore, we add one more line to the visiting phase of the BFS:
+                    </p>
+                        <pre><code class="python">
+for v in graph[u]: # visit u
+    if v not in marked: # for each unmarked neighbor v of u
+        marked.add(v) # mark v
+        layer[v] = layer[u] + 1 # set the layer number of v
+        q.append(v) # add v to the end of the queue
+                        </code></pre>
+                    <p>
+                        <strong>Practice problems:</strong>
+                        <span class="tag tag-problem"><a href="https://open.kattis.com/problems/interplanetarytunnels">Interplanetary Tunnels</a></span>
+                        <span class="tag tag-problem"><a href="https://open.kattis.com/problems/horror">Horror List</a></span>
+                        <span class="tag tag-problem"><a href="https://open.kattis.com/problems/grid">Grid</a></span>
+                    </p>
+
+                    <h4>3.2 ...in 0/1-weighted graphs</h4>
+                    <p>
+                        Coming soon.
+                    </p>
+                    <p>
+                        <strong>Practice problems:</strong>
+                        <span class="tag tag-problem"><a href="https://open.kattis.com/problems/oceancurrents">Ocean Currents</a></span>
+                    </p>
+
+                    <hr/>
+
+                    <h3>4. Testing bipartiteness</h3>
+                    <p>
+                        Coming soon.
+                    </p>
+
+                </section>
+            </div>
+    </body>
+    
+    <script src="bfs-anim.js"></script>
+</html>
