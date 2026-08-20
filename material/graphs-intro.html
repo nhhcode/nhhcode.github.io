@@ -418,7 +418,52 @@ innb = {
 
 					<p><strong>Practice problems:</strong> 
                         <a href='../table.html?tagInput=basic+digraph'><span class="tag tag-datastructure">basic digraph</span></a>
-                    </p>    
+                    </p>
+					
+					<hr />
+
+					<h2 id="edge-weights">3. Edge Weights</h2>
+					<p><span class="image right"><img src='img/edgeweights.png' alt=""/>An example undirected edge-weighted graph.</span>
+						In many problems, we deal with <em>edge-weighted</em> graphs, i.e., graphs $G$ 
+						where each edge $uv = e \in E(G)$ has some numerical weight $w(e)$.
+						If we represent $G$ via its adjacency matrix, we can simply set $M[u, v] = w(e)$ 
+						(as opposed to $M[u, v] = 1$ in the unweighted case).
+						We can use $0$-entries to represent non-edges, 
+						as long as we do not need to consider the case of having weight-$0$ edges. 
+						In that case, we could use for instance 
+						<code class="insentence">None</code>
+						to represent non-edges.
+					</p>
+					<p>
+						Suppose we represent a weighted graph 
+						in a neighborhood set data structure 
+						<code class="insentence">nb</code>.
+						For each edge $uv \in E(G)$ with weight $w(uv)$, 
+						we can add the pair 
+						<code class="insentence">(v, w(uv))</code> to
+						<code class="insentence">nb[u]</code> 
+						to indicate that $u$ has a neighbor $v$ with the corresponding edge 
+						having weight $w(uv)$.
+					</p>
+					<p>
+						Both approaches can be used for undirected and directed graphs analogously.
+						The following code shows how the edge-weighted example graph can be encoded.
+						<pre><code class="python">
+adj = [
+    [None, 10, 1, None],
+    [10, None, -5, 3],
+    [1, -5, None, -7],
+    [None, 3, -7, None]
+]
+
+nb = {
+    1 : {(2, 10), (3, 1)},
+    2 : {(1, 10), (3, -5), (4, 3)},
+    3 : {(1, 1), (2, -5), (4, -7)},
+    4 : {(2, 3), (3, -7)}
+}
+						</code></pre> 
+					</p>
                 </section>
             </div>
     </body>

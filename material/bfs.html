@@ -74,7 +74,7 @@
                     <hr/>
 
                     <h3>1. How it works</h3>
-                    <p><span class="image right" style="font-size: 0.7em;">
+                    <p><span class="image right">
                             <img id='bfsAnim' onclick="toggleBFSAnimation()" src='img/bfs/bfs-06.png' alt=""/>
                         Illustration of the principle of a BFS starting in vertex $1$. 
                         Click the image to start the animation.
@@ -107,7 +107,6 @@
                         so we do not need to explicitly disregard vertices from any layer 
                         $L_j$ with $j < i-2$ in this expression.
                     </p>
-                    <p>
                         We now discuss how to implement this strategy efficiently.
                         To remember which vertices are currently within the reach of our search,
                         we <strong>mark</strong> them.
@@ -122,12 +121,34 @@
                         This way we ensure that the earlier we marked a vertex, 
                         the earlier it will be visited; 
                         in particular, the vertices of any given layer will be enlisted in
-                        and retrieved from the queue consecutively.
-                        We can implement a BFS in python as follows. 
+                        and retrieved from the queue consecutively,
+                        which in turn implies that the layers will be visited 
+                        in the right order.
+                        What kind of data structure we use in Python 
+                        to represent the queue has big effects on how efficient 
+                        the code will be. 
+                        To implement the first-in first-out behavior of the queue,
+                        there are two operations we need to perform frequently:
+                        (1) Appending an element to the end of the queue.
+                        (2) Obtaining and removing the first element of the queue.
+                        Standard lists in python can perform (1) efficiently, in $O(1)$ time;
+                        however, operation (2) takes $O(n)$ time in lists, see 
+                        <a class='alt' href='run-time-ds.html#tabListMethods'>here</a>.
+                        A <a class = "alt" href="run-time-ds.html#header-deque">doubly-ended queue (deque)</a>
+                        data structure can perform both operations in $O(1)$ time, 
+                        so this is the way to go.
+                    </p>
+                    <p>
+                        The full Python code is as follows. 
                         We assume that the graph is provided in the 
                         <a class='alt' href='graphs-intro.html#nb-sets'>neighborhood set</a> 
                         format.
                     </p>
+                    <p><span class="image right">
+                            <img id='bfsAlgoAnim' onclick="toggleBFSAlgoAnim()" src='img/bfs-algo/1.png' alt=""/>
+                        Illustration of the BFS-algorithm starting in vertex $1$. 
+                        Click the image to start the animation.
+                        </span>
                     <pre><code class='python'>
 from collections import deque
 
@@ -143,15 +164,17 @@ def bfs(graph, v):
                 q.append(v) # add v to the end of the queue
     return marked
                     </code></pre>
-                    <p>
-                        As we need to both be able to remove the front of the queue 
-                        and attach to the end of the queue repeatedly in the above algorithm,
-                        we used a
-                        <a class = "alt" href="run-time-ds.html#header-deque">doubly-ended queue (deque)</a>
-                        data structure to represent the queue.
-                        This data structure provides methods that perform both of these operations in $O(1)$ time.
                     </p>
-
+                    <p>
+                        Note that the above code simply returns the vertices that were marked 
+                        during the BFS.
+                        Most problems require you to make modifications to the algorithm 
+                        to answer the question at hand and/or to run it several times; 
+                        below we see some examples.
+                        It is therefore a good idea to familiarize yourself 
+                        closely with how this algorithm works.
+                    </p>
+                    
                     <p><strong>Running time.</strong>
                         Each vertex is marked and appended to the queue at most once (see the innermost if-statement).
                         Therefore, each vertex is <em>visited</em> at most once.
@@ -215,9 +238,9 @@ def bfs(graph, v):
                         The shortest path from $s$ to $t$ would tell you the quickest way of travelling from $s$ to $t$. 
                     </p>
                     <p>
-                        While BFS cannot handle edge-weights, 
+                        While BFS cannot handle arbitrary edge-weights, 
                         there are two interesting subcases of the Shortest Path problem 
-                        that can be solved with the BFS-principle.
+                        that can be solved with BFS.
                     </p>
 
                     <h4>3.1 ...in unweighted graphs</h4>
@@ -226,21 +249,16 @@ def bfs(graph, v):
                         Then, a shortest path is one that <em>minimizes the number of edges</em>.
                         If we start a BFS in vertex $s$, then the distance to vertex $t$ is simply 
                         its <em>layer number</em> (see the graph above for an example).
-                        A vertex being in layer $i$ means that we can reach it by moving over $i$ 
-                        edges. Therefore, if the layer number of $t$ is $i$,
-                        then there is a path $v_0, v_1, \ldots, v_i$ with $v_0 = s$ and $v_i = t$, 
-                        meaning the shortest path from $s$ to $t$ has length at most $i$. 
-                        Now suppose that the shortest path from $s$ to $t$ has length strictly less than $i$.
-                        We can argue that in that case, the layer number of $t$ would have been less than $i$ as well.
-                        To get an idea of that, recall that the vertices in layer $2$ 
-                        are the ones that are reachable by going via $2$ edges from $s$ 
-                        <em>but not via a single edge</em>.
-                        If a vertex is reachable from $s$ by a single edge, it is a neighbor of $s$ 
-                        and therefore placed in layer $1$.
-                        This principle generalizes, in the sense that the vertices in layer $i$ 
-                        are reachable from $s$ by a path of length $i$, 
-                        but not by a path of length at most $i-1$; 
-                        otherwise they would have been placed into an earlier layer. 
+                        To convince yourself of that, 
+                        recall that the vertices in layer $1$ are the neighbors of $s$, 
+                        the vertices in layer $2$ are the neighbors of the vertices in layer $1$ 
+                        that are <em>not</em> adjacent to $s$, 
+                        the vertices in layer $3$ are the neighbors of the vertices in layer $2$ 
+                        that cannot be reached from $s$ by using at most $2$ edges,
+                        and generally, the vertices in layer $i$ are the ones you can 
+                        reach from $s$ by going over $i$ edges but not by going over $i-1$ or less edges.
+                        Therefore, if the layer number of $t$ is $i$,
+                        then the distance from $s$ to $t$ is $i$. 
                     </p>
                     <p>
                         Let us see how to modify the above code to compute the layer numbers of vertices as well.
@@ -273,8 +291,87 @@ for v in graph[u]: # visit u
 
                     <h4>3.2 ...in 0/1-weighted graphs</h4>
                     <p>
-                        Coming soon.
+                        The second case is when all edges have weight either 0 or 1, that is, you can use 
+                        some edges ``for free'' while for the others, you pay the same amount.
+                        We can solve this problem using a slightly modified variant of BFS
+                        essentially as efficient as the standard BFS.
+                        Throughout, we assume we have a 0/1-weighted graph $G$ 
+                        and we denote the starting vertex of a BFS as $s \in V(G)$.
                     </p>
+                    <p><span class="image right"><img src='img/01bfs-layers.png' alt="">State of the queue during a BFS.</span>
+                        The crucial observation is the following. 
+                        At any point during a (regular) BFS, the queue has the following shape: 
+                        It consists of a prefix of vertices that are in some layer $i$, 
+                        followed by a suffix of vertices in layer $i+1$.
+                        At no point we will have three or more layers with vertices in the queue.
+                        In terms of distances, the vertices in the prefix have distance $i$ from $s$
+                        and the vertices in the suffix have distance $i+1$ from $s$.
+                        (Note that the suffix may be empty.)
+                        In the case of 0/1-edge weights, a small modification to the algorithm suffices 
+                        to maintain this property of the queue.
+                        When we visit a vertex $v$ and it has a weight-$0$ edge to an unmarked vertex $w$,
+                        then we insert $w$ at the <em>front</em> of the queue rather than the back,
+                        as it has the same distance from $s$ as $v$.
+                        If we discover a weight-$1$ edge to an unmarked vertex $w$,
+                        we place $w$ at the end of the queue just as before.
+                    </p>
+                    <p>
+                        Before we proceed with discussing the code of the 0/1-BFS, 
+                        <a class='alt' href="graphs-intro.html#edge-weights">recall how to represent edge-weighted graphs</a>.
+                        Again we will use the neighborhood set representation, as we need 
+                        to iterate over neighborhoods just like above.
+                    </p>
+                    <p><span class="image right"><img src='img/01bfs-marking.png' alt=''>A situation in 0/1-BFS where marking could go wrong.</span>
+                        We will make one more conceptual change to the BFS which concerns how we deal with marking.
+                        The reason is the following: 
+                        suppose the two next vertices in the queue are $u_1$ and $u_2$ (in that order)
+                        and they have the same distance $i$ from $s$.
+                        Both $u_1$ and $u_2$ are adjacent to another vertex, $v$, 
+                        but the edge $u_1 v$ has weight $1$ and the edge $u_2 v$ has weight $0$.
+                        Applying the marking scheme of BFS ``literally'' 
+                        we would mark $v$ and insert it into the queue when seeing the edge $u_1 v$ 
+                        and ``set'' its distance to $i+1$.
+                        When the edge $u_2 v$ is discovered later, $v$ is already marked and therefore ignored.
+                        However, the distance of $v$ is actually $i$,
+                        observable by the length-$i$ path from $s$ to $u_2$ and then using the weight-$0$ 
+                        edge $u_2 v$.
+                    </p>
+                    <p>
+                        We therefore ``relax'' the marking procedure as follows. 
+                        Instead of keeping a set of marked vertices, 
+                        we keep the distances $d(v)$ of the starting vertex to the vertex $v$, 
+                        for all $v \in V(G)$. 
+                        We initially set distances of vertices except $s$ to $\infty$.
+                        Whenever we visit a vertex $u$, 
+                        we go over its neighbors $v$ 
+                        and if $d(u) + w(uv)$, the length of an $(s, u)$-path followed by the edge $uv$,
+                        is smaller than the value currently stored at $d(v)$,
+                        we insert $v$ into the queue in the appropriate place.
+                        Observe that this does not make the algorithm significantly slower, 
+                        as any vertex will be inserted into the queue at most twice.
+                        Therefore, the overall running time remains $O(|V(G)| + |E(G)|)$.
+                    </p>
+                    <pre><code class='python'>
+from collections import deque
+from math import inf
+
+def zoBFS(graph, s):
+    d = {v : inf for v in graph} # Set all distances to infinity.
+    d[s] = 0 # The distance from s to s is 0.
+    q = deque([s])
+    while q:
+        u = q.popleft()
+        for (v, x) in graph[u]: # v is a neighbor of u and uv has weight x
+            if d[v] > d[u] + x: # The current distance to v is larger than d(u) plus x
+                d[v] = d[u] + x
+                if x == 1: 
+                    # The edge had weight 1, append v at the end of q.
+                    q.append(v)
+                else:
+                    # The edge had weight 0, append v at the front of q.
+                    q.appendleft(v) 
+    return d
+                    </code></pre>
                     <p>
                         <strong>Practice problems:</strong>
                         <span class="tag tag-problem"><a href="https://open.kattis.com/problems/oceancurrents">Ocean Currents</a></span>

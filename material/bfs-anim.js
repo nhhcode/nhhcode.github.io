@@ -1,12 +1,23 @@
-var myInterval = null
+var bfsInterval = null;
 
 function toggleBFSAnimation() {
-    if (myInterval == null) {
-        myInterval = startAnimation({elementId: 'bfsAnim', images: loadImages()});
+    if (bfsInterval == null) {
+        bfsInterval = startAnimation({elementId: 'bfsAnim', images: loadImages()});
     } else {
-        clearInterval(myInterval);
-        myInterval = null
+        clearInterval(bfsInterval);
+        bfsInterval = null
     }
+}
+
+var bfsAlgoInt = null;
+
+function toggleBFSAlgoAnim() {
+  if (bfsAlgoInt == null) {
+    bfsAlgoInt = startAnimation({elementId: 'bfsAlgoAnim', images: loadImagesAlg()});
+  } else {
+    clearInterval(bfsAlgoInt)
+    bfsAlgoInt = null
+  }
 }
 
 function loadImages() {
@@ -23,6 +34,20 @@ function loadImages() {
     'img/bfs/bfs-10.png',
     'img/bfs/bfs-11.png'
   ];
+}
+
+function loadImagesAlg() {
+  var img = []
+  for (i = 1; i <= 67; i++) {
+    if (i == 14 || i == 66) {
+      continue;
+    }
+    img.push('img/bfs-algo/' +i+ '.png');
+  }
+  img.push('img/bfs-algo/67.png');
+  img.push('img/bfs-algo/67.png');
+  img.push('img/bfs-algo/67.png');
+  return img
 }
 
 function startAnimation({

@@ -336,20 +336,24 @@ for x in A:
                         </p>
                         <p>
                             While removing the <em>last</em> element can be done efficiently 
-                            using the pop-method,
+                            using the 
+                            <code class='insentence'>pop()</code>-method,
                             removing an element from an arbitrary position may take $O(n)$ time.
                             Consider the case when we want to remove the element that sits roughly 
                             in the middle of the list, say at index $n/2$.
                             To make sure that all elements in the second half are at the 
                             correct position after the removal, 
                             we have to shift each elements whose index is greater than $n/2$ 
-                            by $-1$.
+                            by $-1$ position.
                             Since there may be about $n/2 = O(n)$ such elements, 
                             we perform $O(n)$ operations.
-                            The running time of 
+                            This means that both the 
+                            <code class="insentence">pop(i)</code>-method 
+                            (obs: this method retrieves and removes the $i$-th element in the list)
+                            and the 
                             <code class="insentence">alist.remove(x)</code>,
                             which removes the first occurrence of $x$ in the list,
-                            is therefore $O(n)$ in the worst case.
+                            may take $O(n)$ time in the worst case.
                             Calling 
                             <code class="insentence">alist.insert(i, x)</code>
                             inserts $x$ at position $i$ of the list and shifts 
@@ -364,7 +368,7 @@ for x in A:
                             in the list.)
                         </p>
 
-                        <table class="alt">
+                        <table id='tabListMethods' class="alt">
                             <caption style="font-size: 1em;">
                                 Some common commands on and with lists.
                                 Here, 
@@ -413,6 +417,12 @@ for x in A:
                                 <td><code class="insentence">alist.pop()</code></td>
                                 <td>Returns and removes the last element from the list</td>
                                 <td>$O(1)$</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><code class="insentence">alist.pop(i)</code></td>
+                                <td>Returns and removes the $i$-th element from the list</td>
+                                <td>$O(n)$</td>
                                 <td></td>
                             </tr>
                             <tr>
