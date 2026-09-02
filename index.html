@@ -60,7 +60,7 @@
 												18&nbsp;Nov
 											</div>
 										</li>
-										<li><span id="lillekat-toggle"><em>Next extra session: 
+										<li><span id="lillekat-toggle" style="cursor: pointer;"><em>Next extra session: 
 											2 Sep 16:15 Aud Q</em></span>
 											<div id='lillekat-box' class="box hidden">
 												<h5>Fall 2026 Extra Dates</h5>
@@ -114,10 +114,10 @@
 			<section id="two" class="wrapper style2 special">
 				<div class="container">
 					<header class="major">
-						<h2>News</h2>
+						<h2>News <span id="oldnews-toggle" style="font-size: 0.25em; cursor: pointer;">(Show/Hide older news)</span></h2>
 					</header>
 					<div class="row" style="text-align: left;">
-						<ul class="alt" style="font-size: 1.25em; margin-left: 1.5em;">
+						<ul id='news-list' class="alt" style="font-size: 1.25em; margin-left: 1.5em;">
 							<li>
 								2 Sep 2026: This fall semester, we also host <strong>extra sessions</strong> on the Off-Wednesdays.
 								There is no specific problem set or topic in these sessions, 
@@ -203,6 +203,11 @@
 					</div>
 				</div>
 			</footer>
+	<style>
+		#news-list.collapsed li:nth-child(n+4) {
+			display: none;
+		}
+	</style>
 	<script>
 		document.getElementById("editions-toggle").onclick = function () {
     	document.getElementById("editions-box").classList.toggle("hidden");
@@ -210,6 +215,17 @@
 		document.getElementById("lillekat-toggle").onclick = function () {
     	document.getElementById("lillekat-box").classList.toggle("hidden");
   		};
+
+		const newslist = document.getElementById('news-list');
+		newslist.classList.add('collapsed');
+
+		document.getElementById('oldnews-toggle').addEventListener("click", function () {
+			if (newslist.classList.contains("collapsed")) {
+				newslist.classList.remove("collapsed");
+			} else {
+				newslist.classList.add("collapsed");
+			}
+		});
 	</script>
 	</body>
 </html>
