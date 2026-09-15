@@ -158,7 +158,7 @@ print(word, word, word)
 						before we can proceed. 
 						This is done using the 
 						<code class="insentence">int()</code>-function, 
-						passing the string representing a number as an argument.
+						passing the string representing an integer as an argument.
 					</p>
 					<pre><code class='python'>
 a = input()
@@ -303,6 +303,47 @@ sys.stdout.write('\n'.join(out_buffer))
 					</code></pre>
 					<p><strong>Practice problems:</strong> 
                         <a href='../table.html?tagInput=big-input'><span class="tag tag-special">big-input</span></a>
+                    </p>
+
+					<h3>When the number of lines of input is unknown</h3>
+					<p>
+						In some kattis problems, the number of lines is not explicitly stated, 
+						but it is said that the input ends at ``end of file'' (EOF).
+						There are several ways in python to process this kind of input, 
+						the most common one is to import the 
+						<code class="insentence">sys</code>-package 
+						and iterate over 
+						<code class="insentence">sys.stdin</code>.
+						As usual, this gives you one line of input per iteration of the loop. 
+						<strong>However</strong>, each line received from input that way 
+						will have the newline-character in the end, 
+						meaning a line 
+						<code class="insentence">'hello'</code>
+						will be received as
+						<code class="insentence">'hello\n'</code>.
+						To get rid of the newline-character, 
+						you can use the 
+						<code class="insentence">strip()</code>-method.
+						If you use 
+						<code class="insentence">split()</code> 
+						on the line, the newline-character is deleted in the process as well.
+					</p>
+					<pre><code class="python">
+import sys 
+
+for line in sys.stdin:
+    ...
+					</code></pre>
+					<p>
+						Note that if you try to run your program in a terminal, 
+						then you have to notify it once the end of the input is reached. 
+						In Windows, you can do this by pressing 
+						<code class="insentence">Ctrl+Z+Enter</code>, 
+						and in Linux/macOS press 
+						<code class="insentence">Ctrl+D</code>.
+					</p>
+					<p><strong>Practice problems:</strong> 
+                        <a href='../table.html?tagInput=eof'><span class="tag tag-special">eof</span></a>
                     </p>
 
 					</div>
