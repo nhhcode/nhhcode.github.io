@@ -286,9 +286,7 @@ import sys
 
 # Assuming there are n lines of input
 # Stage 1.
-in_buffer = [] 
-for _ in range(n):
-    in_buffer.append(sys.stdin.readline())
+in_buffer = [sys.stdin.readline().strip() for _ in range(n)] 
 
 out_buffer = [] 
 # Stage 2. Solve the problem. 
