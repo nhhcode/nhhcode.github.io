@@ -34,6 +34,10 @@
 
 					<header class="major">
 						<h2>Kattis Problems</h2>
+						(Number of problems:
+						<span id="numprob"></span> | 
+						Last update: 
+						<span id="lastupdate"></span>)
 					</header>
           <div style="display: flex; gap:10px; align-items: stretch;">
             <input type="text" id="tagInput" onkeyup="tagFilter()" 
@@ -943,6 +947,11 @@
 		document.getElementById('tagInput').value = ti;
 		tagFilter();
 	}
+</script>
+<script>
+	document.getElementById("numprob").textContent = document.getElementById("problemTable").tBodies[0].rows.length
+	const lastModifiedDate = new Date(document.lastModified)
+	document.getElementById("lastupdate").textContent = lastModifiedDate.toDateString()
 </script>
 </body>
 </html>
