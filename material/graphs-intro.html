@@ -203,6 +203,44 @@ for w in graph[3]:
 						Nevertheless, it is useful to familiarize yourself with more basic
 						representations of graphs such as adjancecy matrices.
 					</p>
+
+					<p><strong>Reading a graph from kattis input.</strong>
+						There are several ways in which graphs can be represented in kattis problems.
+						We exemplify here one quite common way.
+						The vertex set of the graph is $\{1, \ldots, n\}$ 
+						for some $n$ provided at the beginning of the input.
+						This number $n$ is given on the same line as the number of edges $m$,
+						after which, each of the next $m$ lines gives one edge of the graph being described.
+						In this representation, the graph $1-2-3-4$ could be given as follows:
+<pre><code>
+4 3
+1 2
+2 3
+3 4
+</code></pre>
+						(The first line tells you $n = 4$ and $m = 3$; 
+						the second line says there is an edge between $1$ and $2$, 
+						the third line that there is an edge between $2$ and $3$, 
+						and the fourth line that there is an edge between $3$ and $4$.)
+						To read such an input into python, first you read the line containing $n$ and $m$,
+						create the dictionary representing the graph, and then loop over the $m$ lines giving the edges.
+						<pre><code class='python'>
+n, m = map(int, input().split())
+graph = {v : set() for v in range(1, n+1)}
+for _ in range(m):
+    u, v = map(int, input().split())
+    graph[u].add(v)
+    graph[v].add(u)
+						</code></pre>
+						Note that we use 
+						<code class="insentence">range(1, n+1)</code>
+						to create the keys set of the dictionary, as this gives us the numbers 
+						from $1$ to $n$.
+						We initialize an empty set associated with each vertex (/key), 
+						as before reading the edges, no vertex has a neighbor yet.
+						The loop (with $m$ iterations -- one for each edge) 
+						then adds the edges one-by-one, reading one line of input at a time. 
+					</p>
 					
 					<h4>Adjacency matrix</h4>
 					<p>
