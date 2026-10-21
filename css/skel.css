@@ -245,3 +245,16 @@
 		.\-3u { margin-left: 25% }
 		.\-2u { margin-left: 16.6666666667% }
 		.\-1u { margin-left: 8.3333333333% }
+
+.pictures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pictures img {
+    flex: 1 1 300px;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+}
